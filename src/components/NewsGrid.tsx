@@ -14,7 +14,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const categories = ['Todos', 'Eleitoral', 'Mercado', 'Opinião', 'Tecnologia', 'Agro', 'Finanças', 'Cidades'];
+  const categories = ['Todos', 'Eleitoral', 'Institucional', 'Serviços'];
 
   const filteredArticles = newsArticles.filter((article) => {
     const matchesCategory = selectedCategory === 'Todos' || article.category === selectedCategory;
@@ -41,14 +41,14 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
             <div className="flex items-center gap-2 text-amber-500 mb-2">
               <BookOpen size={18} />
               <span className="text-xs font-black uppercase tracking-[0.3em] font-mono">
-                ARQUIVO DE INTELIGÊNCIA & ESTUDOS
+                CENTRAL DE CONTEÚDO OFICIAL
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-outfit">
-              Pesquisas & Tendências
+              Estudos ANZA & Justiça Eleitoral
             </h2>
             <p className="text-sm md:text-base text-slate-400 max-w-2xl mt-2">
-              Acesse análises aprofundadas sobre o comportamento do eleitor, consumo, inflação e opinião pública com a assinatura de rigor do Instituto ANZA.
+              Pesquisas próprias da ANZA e informações institucionais publicadas pela ANC, TSE e TRE.
             </p>
           </div>
 
@@ -59,7 +59,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar por tema, candidato ou cidade..."
+              placeholder="Buscar por tema ou serviço eleitoral..."
               className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-all font-medium"
             />
           </div>
