@@ -35,7 +35,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
       title: 'PESQUISA EXCLUSIVA CEARÁ 2026: GOVERNADOR, SENADOR E AVALIAÇÕES',
       subtitle: 'Levantamento quantitativo com 1.225 entrevistas em 34 municípios detalha cenários espontâneos, estimulados e segundo turno.',
       img: '/urna_eletronica_brasil.jpg',
-      badge: 'RELATÓRIO OFICIAL TSE',
+      badge: 'PESQUISA PRÓPRIA ANZA',
       reg: 'REG. TSE CE-07550/2026',
       highlights: ['Ciro Gomes lidera estimulada com 44.0%', 'Elmano de Freitas com 35.9%', 'Aprovação do Gov. Elmano em 56.4%'],
       action: onExplore,
