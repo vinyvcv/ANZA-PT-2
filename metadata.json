@@ -1,0 +1,6 @@
+{
+  "name": "ANZA - Portal de Pesquisa & Inteligência",
+  "description": "Portal de inteligência de dados, pesquisas eleitorais, mercado, consumo e opinião pública com rigor metodológico e relatórios interativos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
