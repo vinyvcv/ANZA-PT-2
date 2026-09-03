@@ -112,9 +112,19 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
           <div>
             © 2026 ANZA Pesquisa e Inteligência de Dados. Todos os direitos reservados.
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center gap-6">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-settings'))}
+              className="hover:text-amber-400 underline decoration-dotted underline-offset-4 transition-colors"
+            >
+              Preferências de Cookies
+            </button>
+            <span className="text-slate-600">|</span>
             <span>LGPD Compliance</span>
+            <span className="text-slate-600">|</span>
             <span>Auditoria 100%</span>
+            <span className="text-slate-600">|</span>
             <span>Resolução-TSE 23.600/2019</span>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LandingPage from './LandingPage';
 import ReportView from './components/ReportView';
+import { CookieConsent } from './components/CookieConsent';
 
 export const App: React.FC = () => {
   const [view, setView] = useState<'landing' | 'dashboard'>('landing');
@@ -30,11 +31,17 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (view === 'dashboard') {
-    return <ReportView onBack={handleBackToLanding} />;
-  }
-
-  return <LandingPage onExplore={handleOpenReport} />;
+  return (
+    <>
+      {view === 'dashboard' ? (
+        <ReportView onBack={handleBackToLanding} />
+      ) : (
+        <LandingPage onExplore={handleOpenReport} />
+      )}
+      <CookieConsent />
+    </>
+  );
 };
 
 export default App;
+
