@@ -2,7 +2,7 @@ import React from 'react';
 
 interface AlgoritmaLogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg';
   withTagline?: boolean;
   variant?: 'light' | 'dark';
 }
@@ -14,61 +14,56 @@ export const AlgoritmaLogo: React.FC<AlgoritmaLogoProps> = ({
   variant = 'light',
 }) => {
   const heights = {
-    sm: 'h-7',
-    md: 'h-9 md:h-10',
-    lg: 'h-12 md:h-14',
-    xl: 'h-16 md:h-20',
+    sm: 'h-6',
+    md: 'h-8',
+    lg: 'h-10',
   };
 
-  const textColor = variant === 'dark' ? 'text-slate-950' : 'text-white';
-  const taglineColor = variant === 'dark' ? 'text-slate-600' : 'text-cyan-300/80';
+  const textSizes = {
+    sm: 'text-lg',
+    md: 'text-xl',
+    lg: 'text-2xl',
+  };
+
+  const textColor = variant === 'dark' ? 'text-slate-950' : 'text-slate-50';
+  const subColor = variant === 'dark' ? 'text-slate-600' : 'text-slate-400';
 
   return (
-    <div className={`flex items-center gap-3 select-none ${className}`}>
-      {/* Official Algoritma Dados Geometric Node Emblem */}
-      <div className="relative flex items-center justify-center shrink-0">
-        <svg
-          viewBox="0 0 240 240"
-          className={`${heights[size]} w-auto aspect-square text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.35)]`}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Outer Hexagonal Data Frame */}
-          <polygon
-            points="120,14 214,68 214,172 120,226 26,172 26,68"
-            stroke="currentColor"
-            strokeWidth="12"
-            strokeLinejoin="round"
-            fill="rgba(6, 182, 212, 0.08)"
-          />
-          {/* Inner Algorithmic Triangle / A-Structure */}
-          <path
-            d="M120 52L178 172H148L120 110L92 172H62L120 52Z"
-            fill="currentColor"
-          />
-          {/* Data Bridge */}
-          <rect x="92" y="140" width="56" height="14" rx="7" fill="#10b981" />
-          {/* Precision Nodes */}
-          <circle cx="120" cy="52" r="10" fill="#ffffff" />
-          <circle cx="62" cy="172" r="8" fill="#38bdf8" />
-          <circle cx="178" cy="172" r="8" fill="#10b981" />
-        </svg>
-      </div>
+    <div className={`inline-flex items-center gap-2.5 select-none whitespace-nowrap shrink-0 ${className}`}>
+      <svg
+        viewBox="0 0 240 240"
+        className={`${heights[size]} w-auto aspect-square text-cyan-400 shrink-0`}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <polygon
+          points="120,16 212,69 212,171 120,224 28,171 28,69"
+          stroke="currentColor"
+          strokeWidth="12"
+          strokeLinejoin="miter"
+          fill="rgba(6, 182, 212, 0.06)"
+        />
+        <path
+          d="M120 56L174 170H146L120 112L94 170H66L120 56Z"
+          fill="currentColor"
+        />
+        <rect x="94" y="142" width="52" height="12" fill="#10b981" />
+        <circle cx="120" cy="56" r="8" fill="#f8fafc" />
+      </svg>
 
-      {/* Official Wordmark */}
-      <div className="flex flex-col text-left">
-        <div className="flex items-baseline gap-1.5 tracking-[-0.03em]">
-          <span className={`font-black ${textColor} text-xl md:text-2xl font-heading tracking-tight lowercase`}>
+      <div className="flex flex-col text-left leading-none">
+        <div className="flex items-baseline gap-1.5">
+          <span className={`font-semibold ${textColor} ${textSizes[size]} font-heading tracking-tight lowercase`}>
             algoritma
           </span>
-          <span className="font-mono font-extrabold text-[11px] md:text-xs uppercase tracking-[0.18em] text-cyan-400">
+          <span className="font-mono font-medium text-xs tracking-wider text-cyan-400 lowercase">
             dados
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-0.5 animate-pulse shadow-[0_0_8px_#10b981]" />
         </div>
         {withTagline && (
-          <span className={`text-[8.5px] font-extrabold uppercase tracking-[0.28em] ${taglineColor} -mt-0.5 font-mono`}>
-            Pesquisa &amp; Inteligência
+          <span className={`text-[11px] font-normal ${subColor} mt-1`}>
+            Instituto de Pesquisa e Inteligência
           </span>
         )}
       </div>

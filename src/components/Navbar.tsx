@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AlgoritmaLogo } from './AlgoritmaLogo';
-import { BarChart3, Calculator, Menu, X, ShieldCheck, Search, ChevronRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   onExplore: () => void;
   onOpenQuote: () => void;
-  onOpenSearch?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onExplore, onOpenQuote }) => {
@@ -14,19 +13,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onExplore, onOpenQuote }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 12);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { label: 'Início', href: '#inicio' },
-    { label: 'Eleitoral', href: '#eleitoral' },
-    { label: 'Mercado', href: '#noticias' },
-    { label: 'Simulador', href: '#simulador' },
+    { label: 'Portal', href: '#inicio' },
+    { label: 'Cenários 2026', href: '#simulador' },
+    { label: 'Call Center', href: '#call-center' },
     { label: 'Metodologia', href: '#metodologia' },
-    { label: 'Contato', href: '#contato' },
+    { label: 'Publicações', href: '#noticias' },
   ];
 
   const handleNavClick = (href: string) => {
@@ -38,114 +36,110 @@ export const Navbar: React.FC<NavbarProps> = ({ onExplore, onOpenQuote }) => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${
         scrolled
-          ? 'bg-[#050b14]/95 backdrop-blur-xl border-b border-cyan-500/25 shadow-2xl shadow-slate-950/80 py-3'
-          : 'bg-[#050b14]/85 backdrop-blur-lg border-b border-white/10 py-4'
+          ? 'bg-[#050b14]/96 backdrop-blur-md border-b border-slate-800/90'
+          : 'bg-[#050b14]/90 backdrop-blur-sm border-b border-slate-800/60'
       }`}
     >
-      {/* Top subtle accent gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent opacity-80" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between relative">
-        {/* Brand Logo */}
-        <div 
-          className="flex items-center gap-4 cursor-pointer shrink-0 py-1 transition-opacity hover:opacity-90" 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+        {/* Zone 1: Single-line Brand Wordmark */}
+        <button
+          type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-sm py-1 shrink-0"
+          aria-label="Algoritma Dados — Voltar ao topo"
         >
-          <AlgoritmaLogo size="md" withTagline={true} />
-        </div>
+          <AlgoritmaLogo size="sm" withTagline={false} />
+        </button>
 
-        {/* Center Links (Desktop) */}
-        <div className="hidden lg:flex items-center gap-5 xl:gap-8">
+        {/* Zone 2: 5 concise single-line text navigation links */}
+        <nav aria-label="Navegação principal" className="hidden lg:flex items-center gap-7">
           {navLinks.map((item) => (
             <button
               key={item.label}
+              type="button"
               onClick={() => handleNavClick(item.href)}
-              className="text-xs font-semibold text-slate-300 hover:text-cyan-400 uppercase tracking-widest transition-colors relative py-1.5 group"
+              className="text-sm font-medium text-slate-300 hover:text-white transition-colors duration-150 whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent hover:border-cyan-400 focus-visible:outline-none focus-visible:text-cyan-300 cursor-pointer"
             >
               {item.label}
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300 rounded-full" />
             </button>
           ))}
-        </div>
+        </nav>
 
-        {/* Right Action CTAs */}
-        <div className="hidden md:flex items-center gap-2.5 shrink-0 ml-4">
+        {/* Zone 3: Single Primary Action */}
+        <div className="hidden lg:flex items-center shrink-0">
           <button
-            onClick={onExplore}
-            className="h-8 px-3 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-200 border border-sky-500/35 text-[10px] font-extrabold uppercase tracking-wide transition-all flex items-center gap-1.5 hover:border-sky-400 active:scale-95 shrink-0"
-          >
-            <BarChart3 size={13} className="text-sky-400" />
-            <span>Relatório Ceará</span>
-          </button>
-
-          <button
+            type="button"
             onClick={onOpenQuote}
-            className="h-8 px-3.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-black text-[10px] uppercase tracking-wide transition-all shadow-sm shadow-cyan-500/20 active:scale-95 font-outfit flex items-center gap-1.5 shrink-0"
+            className="px-4 py-2 rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050b14]"
           >
-            <Calculator size={13} />
-            <span>Orçamento</span>
+            Solicitar orçamento
           </button>
         </div>
 
-        {/* Mobile menu toggle */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* Mobile Menu Trigger */}
+        <div className="flex lg:hidden items-center gap-3 shrink-0">
           <button
+            type="button"
             onClick={onOpenQuote}
-            className="h-9 px-3 rounded-lg bg-cyan-500 text-slate-950 font-black text-[10px] uppercase tracking-wider"
+            className="px-3.5 py-2 min-h-[40px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs whitespace-nowrap shrink-0 transition-colors cursor-pointer"
           >
             Orçamento
           </button>
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md border border-slate-800 text-slate-200 hover:bg-slate-900 transition-colors cursor-pointer"
+            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#050b14]/98 backdrop-blur-2xl border-b border-cyan-500/30 px-6 py-6 space-y-5 animate-in slide-in-from-top duration-200 shadow-2xl">
-          <div className="flex flex-col space-y-2">
+        <div className="lg:hidden bg-[#08101e] border-b border-slate-800 px-4 sm:px-6 py-4 space-y-2">
+          <nav className="flex flex-col divide-y divide-slate-800/70" aria-label="Menu móvel">
             {navLinks.map((item) => (
               <button
                 key={item.label}
+                type="button"
                 onClick={() => handleNavClick(item.href)}
-                className="text-left text-xs font-bold text-slate-300 hover:text-cyan-400 uppercase tracking-widest py-2.5 border-b border-white/5 transition-colors"
+                className="text-left text-sm font-medium text-slate-200 hover:text-cyan-300 py-3.5 min-h-[44px] transition-colors cursor-pointer"
               >
                 {item.label}
               </button>
             ))}
-          </div>
-          <div className="pt-2 flex flex-col gap-3">
+          </nav>
+          <div className="pt-3 border-t border-slate-800 flex flex-col gap-2.5">
             <button
+              type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 onExplore();
               }}
-              className="w-full h-11 rounded-xl bg-sky-500/20 border border-sky-500/40 text-sky-200 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 active:scale-98 transition-all"
+              className="w-full py-3 min-h-[44px] rounded-md border border-slate-700 text-slate-100 hover:border-cyan-400 text-sm font-medium transition-colors cursor-pointer"
             >
-              <BarChart3 size={16} />
-              <span>Ver Relatório Ceará 2026</span>
+              Abrir relatório Ceará 2026
             </button>
             <button
+              type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenQuote();
               }}
-              className="w-full h-11 rounded-xl bg-cyan-500 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 active:scale-98 transition-all shadow-lg shadow-cyan-500/20"
+              className="w-full py-3 min-h-[44px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-semibold transition-colors cursor-pointer"
             >
-              <Calculator size={16} />
-              <span>Solicitar Orçamento de Campo</span>
+              Solicitar orçamento
             </button>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

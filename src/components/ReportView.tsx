@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, 
-  Cell, LabelList 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  LabelList,
+  CartesianGrid,
 } from 'recharts';
-import { 
-  Landmark, ListOrdered, Settings, Search, UserCheck, 
-  Activity, Award, ClipboardList, BookOpen, ChevronRight, 
-  ChevronLeft, MessageSquare, Quote, ArrowLeft, Download, 
-  Share2, Check, ArrowUpRight, Filter 
-} from 'lucide-react';
+import { ArrowLeft, Download, Share2, Check } from 'lucide-react';
 import { reportData, SurveyRow } from '../data/reportData';
 import { AlgoritmaLogo } from './AlgoritmaLogo';
+import { MethodologyGlossary } from './MethodologyGlossary';
 
 const useWindowSize = () => {
   const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
@@ -23,38 +25,41 @@ const useWindowSize = () => {
   return size;
 };
 
-interface StatCardProps {
-  label: string;
-  value: string;
-  sub?: string;
+interface ReportTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    payload: SurveyRow;
+  }>;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, sub }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 10 }} 
-    whileInView={{ opacity: 1, y: 0 }} 
-    viewport={{ once: true }} 
-    className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center min-w-[140px] md:min-w-[170px] flex-1 md:flex-none shadow-xl"
-  >
-    <div className="text-2xl md:text-4xl font-black text-white mb-1 font-outfit">{value}</div>
-    <div className="text-[9px] md:text-[10px] font-black text-cyan-400 uppercase tracking-widest font-mono">{label}</div>
-    {sub && <div className="text-[8px] text-slate-400 mt-0.5">{sub}</div>}
-  </motion.div>
-);
+const ReportTooltip: React.FC<ReportTooltipProps> = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0].payload;
+  return (
+    <div className="bg-[#050b14] border border-slate-700 rounded-md px-3 py-2 shadow-xl text-left">
+      <div className="text-xs font-medium text-white">{row.name}</div>
+      <div className="text-sm font-mono font-semibold text-cyan-400 tabular-nums mt-0.5">
+        {Number(row.value).toFixed(1)}%
+      </div>
+      {row.n !== undefined && (
+        <div className="text-[11px] font-mono text-slate-400 tabular-nums">
+          n = {row.n.toLocaleString('pt-BR')}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface SectionHeaderProps {
-  icon?: any;
-  title: string;
+  kicker: string;
   subtitle: string;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ icon: Icon, title, subtitle }) => (
-  <div className="flex flex-col mb-8 md:mb-12 border-l-4 border-cyan-500 pl-4 md:pl-6 py-1">
-    <div className="flex items-center gap-2.5 text-cyan-400 mb-1">
-      {Icon && <Icon size={18} className="md:w-[20px] md:h-[20px]" />}
-      <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] font-mono">{title}</span>
-    </div>
-    <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight uppercase leading-tight font-outfit">{subtitle}</h2>
+const SectionHeader: React.FC<SectionHeaderProps> = ({ kicker, subtitle }) => (
+  <div className="pb-5 mb-6 border-b border-slate-800/80">
+    <p className="text-xs font-mono text-cyan-400 mb-1.5">{kicker}</p>
+    <h2 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">{subtitle}</h2>
   </div>
 );
 
@@ -64,95 +69,77 @@ interface DataTableProps {
   total?: { n: number; value: number };
 }
 
-const DataTable: React.FC<DataTableProps> = ({ columns, data, total }) => (
-  <div className="w-full overflow-hidden rounded-2xl border border-white/10 mt-6 md:mt-8 shadow-2xl">
-    <table className="w-full text-left text-[11px] md:text-[12px] font-bold uppercase tracking-tight">
-      <thead className="bg-[#0c172a] text-cyan-300 border-b border-white/10 uppercase font-mono text-[10px]">
-        <tr>
-          {columns.map((col, i) => (
-            <th key={i} className={`px-4 md:px-6 py-3.5 ${i === 0 ? 'text-left' : 'text-center'}`}>
-              {col}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="bg-[#08101e]/70 backdrop-blur-md divide-y divide-white/5">
-        {data.map((row, i) => (
-          <tr key={i} className="hover:bg-white/[0.04] transition-colors">
-            <td className="px-4 md:px-6 py-3 md:py-4 text-slate-200 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color || '#06b6d4' }} />
-              <span>{row.name}</span>
-            </td>
-            <td className="px-4 md:px-6 py-3 md:py-4 text-sky-300 font-mono text-center">{row.n ? row.n.toLocaleString() : '-'}</td>
-            <td className="px-4 md:px-6 py-3 md:py-4 text-white font-black font-outfit text-center text-sm">{row.value.toFixed(1)}%</td>
-          </tr>
-        ))}
-        {total && (
-          <tr className="bg-cyan-500/10 text-white font-black border-t border-cyan-500/30">
-            <td className="px-4 md:px-6 py-3.5 text-cyan-300">TOTAL GERAL</td>
-            <td className="px-4 md:px-6 py-3.5 text-cyan-300 text-center font-mono">{total.n.toLocaleString()}</td>
-            <td className="px-4 md:px-6 py-3.5 text-cyan-300 text-center font-outfit">{total.value.toFixed(1)}%</td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-);
-
-interface QuestionBoxProps {
-  id: string;
-  question: string;
-  colorClass?: string;
-}
-
-const QuestionBox: React.FC<QuestionBoxProps> = ({ id, question, colorClass = "amber" }) => {
-  const [qId, ...labelParts] = id.split(' · ');
-  const label = labelParts.join(' · ');
+const DataTable: React.FC<DataTableProps> = ({ columns, data, total }) => {
+  const hasCountColumn = columns.length === 3;
 
   return (
-    <div className="relative mb-10 group">
-      <div className="relative flex flex-col md:flex-row items-start gap-6 p-6 md:p-8 rounded-3xl bg-slate-900/40 border border-white/10 backdrop-blur-2xl shadow-xl overflow-hidden">
-        
-        {/* Identity Badge */}
-        <div className="flex-shrink-0 flex items-center justify-center">
-          <div className="relative px-5 py-6 rounded-2xl bg-gradient-to-b from-white/[0.08] to-transparent border border-white/10 flex flex-col items-center justify-center min-w-[90px] shadow-lg">
-             <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] mb-1 font-mono">ENUNCIADO</span>
-             <span className="text-xl font-black text-white tracking-tight font-outfit">{qId}</span>
-             <div className="mt-2 p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400">
-                <MessageSquare size={14} />
-             </div>
-          </div>
-        </div>
-
-        {/* Question Text Content */}
-        <div className="flex-grow space-y-3 pt-1 text-left">
-          <div className="flex items-center gap-3">
-             <div className="h-[1px] w-6 bg-cyan-500/50" />
-             <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em] font-mono">
-                {label || "PERGUNTA APLICADA AO ELEITOR"}
-             </span>
-          </div>
-          
-          <div className="relative">
-            <Quote size={36} className="absolute -left-3 -top-5 opacity-10 text-cyan-400 pointer-events-none transform -scale-x-100" />
-            <h3 className="text-lg md:text-xl font-bold text-white leading-relaxed tracking-tight max-w-4xl relative z-10 italic">
-               {question.replace(/^"|"$/g, '')}
-            </h3>
-          </div>
-        </div>
-      </div>
+    <div className="w-full overflow-x-auto border border-slate-800/90 rounded-md mt-6 bg-[#050b14]">
+      <table className="w-full text-left text-xs sm:text-sm border-collapse">
+        <thead>
+          <tr className="border-b border-slate-800 text-slate-400 font-mono text-[11px]">
+            {columns.map((col, i) => (
+              <th
+                key={i}
+                className={`py-3 px-4 font-medium ${i === 0 ? 'text-left' : 'text-right'}`}
+              >
+                {col}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-800/70">
+          {data.map((row, i) => (
+            <tr key={i} className="hover:bg-slate-900/40 transition-colors">
+              <td className="py-3 px-4 text-slate-200 font-medium">{row.name}</td>
+              {hasCountColumn && (
+                <td className="py-3 px-4 text-right font-mono text-slate-400 tabular-nums">
+                  {row.n !== undefined ? row.n.toLocaleString('pt-BR') : '—'}
+                </td>
+              )}
+              <td className="py-3 px-4 text-right font-mono font-semibold text-white tabular-nums">
+                {row.value.toFixed(1)}%
+              </td>
+            </tr>
+          ))}
+          {total && (
+            <tr className="bg-slate-900/80 border-t border-slate-700 font-semibold">
+              <td className="py-3 px-4 text-cyan-300">Total geral</td>
+              {hasCountColumn && (
+                <td className="py-3 px-4 text-right font-mono text-cyan-300 tabular-nums">
+                  {total.n.toLocaleString('pt-BR')}
+                </td>
+              )}
+              <td className="py-3 px-4 text-right font-mono text-cyan-300 tabular-nums">
+                {total.value.toFixed(1)}%
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
 
+interface QuestionBoxProps {
+  id: string;
+  question: string;
+}
+
+const QuestionBox: React.FC<QuestionBoxProps> = ({ id, question }) => (
+  <div className="mb-6 p-5 rounded-md bg-[#08101e] border border-slate-800/90 text-left">
+    <div className="text-[11px] font-mono text-cyan-400 mb-1.5">Enunciado · {id}</div>
+    <p className="text-sm sm:text-base text-slate-200 leading-relaxed max-w-3xl">
+      &ldquo;{question.replace(/^"|"$/g, '')}&rdquo;
+    </p>
+  </div>
+);
+
 interface DataSectionProps {
   id: string;
-  icon?: any;
-  title: string;
+  kicker: string;
   subtitle: string;
   questionId: string;
   questionText: string;
-  questionColor?: string;
   chartTitle: string;
   chartData: SurveyRow[];
   columns: string[];
@@ -160,67 +147,86 @@ interface DataSectionProps {
 }
 
 const DataSection: React.FC<DataSectionProps> = ({
-  id, icon, title, subtitle, questionId, questionText, questionColor, chartTitle, chartData, columns, total
+  id,
+  kicker,
+  subtitle,
+  questionId,
+  questionText,
+  chartTitle,
+  chartData,
+  columns,
+  total,
 }) => {
   const [mounted, setMounted] = useState(false);
   const size = useWindowSize();
+
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
+  const chartHeight = Math.max(220, chartData.length * 42 + 40);
+
   return (
-    <section id={id} className="py-8 md:py-14 px-4 border-b border-white/5 last:border-0 relative scroll-mt-24 text-left">
-      <div className="max-w-7xl mx-auto px-2 md:px-6">
-        <SectionHeader icon={icon} title={title} subtitle={subtitle} />
-        <QuestionBox id={questionId} question={questionText} colorClass={questionColor} />
-        
-        <div className="p-4 md:p-8 bg-white/[0.01] border border-white/10 rounded-3xl min-h-[380px]">
-          <h4 className="text-center text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-6 font-mono">
-            {chartTitle}
-          </h4>
-          
-          <div className="h-[280px] md:h-[340px] w-full relative">
+    <section id={id} className="py-12 sm:py-16 border-b border-slate-800/80 scroll-mt-20 text-left">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader kicker={kicker} subtitle={subtitle} />
+        <QuestionBox id={questionId} question={questionText} />
+
+        <div className="p-5 sm:p-8 bg-[#08101e] border border-slate-800/90 rounded-lg">
+          <h3 className="text-xs font-mono text-slate-400 mb-5">{chartTitle}</h3>
+
+          <div style={{ height: chartHeight }} className="w-full relative">
             {mounted && (
               <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                <BarChart layout="vertical" data={chartData} margin={{ right: 45, left: 0 }}>
-                  <XAxis type="number" hide />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category" 
-                    width={size.width < 768 ? 110 : 220} 
-                    stroke="#64748b" 
-                    fontSize={size.width < 768 ? 9 : 11} 
-                    tick={{ fontWeight: 700, fill: '#cbd5e1' }} 
+                <BarChart
+                  layout="vertical"
+                  data={chartData}
+                  margin={{ top: 4, right: 54, left: 0, bottom: 4 }}
+                >
+                  <CartesianGrid horizontal={false} stroke="rgba(148,163,184,0.12)" strokeDasharray="3 3" />
+                  <XAxis
+                    type="number"
+                    tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                    tickFormatter={(v) => `${v}%`}
+                    axisLine={{ stroke: '#1e293b' }}
+                    tickLine={false}
                   />
-                  <Tooltip 
-                    contentStyle={{ 
-                      background: '#0f172a', 
-                      borderColor: '#1e293b', 
-                      borderRadius: '12px',
-                      color: '#fff' 
-                    }} 
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={size.width < 640 ? 125 : 225}
+                    tick={{ fill: '#e2e8f0', fontSize: size.width < 640 ? 10 : 12, fontWeight: 500 }}
+                    axisLine={false}
+                    tickLine={false}
                   />
-                  <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={24}>
-                    {chartData.map((entry, i) => (<Cell key={i} fill={entry.color || '#8b5cf6'} />))}
-                    <LabelList 
-                      dataKey="value" 
-                      position="right" 
-                      content={(props: any) => {
-                        const { x, y, width, height, value } = props;
-                        return (
-                          <text x={x + width + 8} y={y + height / 2} fill="#cbd5e1" textAnchor="start" dominantBaseline="middle" className="text-[11px] font-black font-outfit">
-                            {Number(value).toFixed(1)}%
-                          </text>
-                        );
-                      }}
+                  <Tooltip content={<ReportTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+                  <Bar dataKey="value" radius={[0, 3, 3, 0]} barSize={22}>
+                    {chartData.map((entry, i) => (
+                      <Cell key={i} fill={entry.color || '#06b6d4'} />
+                    ))}
+                    <LabelList
+                      dataKey="value"
+                      position="right"
+                      content={({ x, y, width, height, value }: any) => (
+                        <text
+                          x={Number(x || 0) + Number(width || 0) + 8}
+                          y={Number(y || 0) + Number(height || 0) / 2}
+                          fill="#f8fafc"
+                          textAnchor="start"
+                          dominantBaseline="middle"
+                          className="text-xs font-mono font-semibold"
+                        >
+                          {Number(value).toFixed(1)}%
+                        </text>
+                      )}
                     />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             )}
           </div>
-          
+
           <DataTable columns={columns} data={chartData} total={total} />
         </div>
       </div>
@@ -230,81 +236,98 @@ const DataSection: React.FC<DataSectionProps> = ({
 
 interface EvaluationBlockProps {
   id: string;
-  icon?: any;
-  title: string;
+  kicker: string;
   subtitle: string;
   questionId: string;
   questionText: string;
-  questionColor?: string;
   approvalData: { title: string; data: SurveyRow[] };
   qualitativeData: { title: string; data: SurveyRow[] };
 }
 
 const EvaluationBlock: React.FC<EvaluationBlockProps> = ({
-  id, icon, title, subtitle, questionId, questionText, questionColor, approvalData, qualitativeData
+  id,
+  kicker,
+  subtitle,
+  questionId,
+  questionText,
+  approvalData,
+  qualitativeData,
 }) => {
   const [mounted, setMounted] = useState(false);
   const size = useWindowSize();
+
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <section id={id} className="py-8 md:py-14 px-4 border-b border-white/5 last:border-0 relative scroll-mt-24 text-left">
-      <div className="max-w-7xl mx-auto px-2 md:px-6">
-        <SectionHeader icon={icon} title={title} subtitle={subtitle} />
-        <QuestionBox id={questionId} question={questionText} colorClass={questionColor} />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+    <section id={id} className="py-12 sm:py-16 border-b border-slate-800/80 scroll-mt-20 text-left">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader kicker={kicker} subtitle={subtitle} />
+        <QuestionBox id={questionId} question={questionText} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {[approvalData, qualitativeData].map((chart, idx) => (
-            <div key={idx} className="p-4 md:p-6 bg-white/[0.01] border border-white/10 rounded-3xl min-h-[320px]">
-              <h4 className="text-center text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-6 font-mono">
-                {chart.title}
-              </h4>
-              
-              <div className="h-[180px] md:h-[220px] w-full relative">
+            <div
+              key={idx}
+              className="p-5 sm:p-6 bg-[#08101e] border border-slate-800/90 rounded-lg"
+            >
+              <h3 className="text-xs font-mono text-slate-400 mb-5">{chart.title}</h3>
+
+              <div className="h-[200px] w-full relative">
                 {mounted && (
                   <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                    <BarChart layout="vertical" data={chart.data} margin={{ right: 45, left: 0 }}>
-                      <XAxis type="number" hide />
-                      <YAxis 
-                        dataKey="name" 
-                        type="category" 
-                        width={size.width < 768 ? 95 : 140} 
-                        stroke="#64748b" 
-                        fontSize={size.width < 768 ? 9 : 11} 
-                        tick={{ fontWeight: 700, fill: '#cbd5e1' }} 
+                    <BarChart
+                      layout="vertical"
+                      data={chart.data}
+                      margin={{ top: 4, right: 50, left: 0, bottom: 4 }}
+                    >
+                      <CartesianGrid horizontal={false} stroke="rgba(148,163,184,0.12)" strokeDasharray="3 3" />
+                      <XAxis
+                        type="number"
+                        domain={[0, 70]}
+                        tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                        tickFormatter={(v) => `${v}%`}
+                        axisLine={{ stroke: '#1e293b' }}
+                        tickLine={false}
                       />
-                      <Tooltip 
-                        contentStyle={{ 
-                          background: '#0f172a', 
-                          borderColor: '#1e293b', 
-                          borderRadius: '12px',
-                          color: '#fff' 
-                        }} 
+                      <YAxis
+                        dataKey="name"
+                        type="category"
+                        width={size.width < 640 ? 110 : 145}
+                        tick={{ fill: '#e2e8f0', fontSize: size.width < 640 ? 10 : 12, fontWeight: 500 }}
+                        axisLine={false}
+                        tickLine={false}
                       />
-                      <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={26}>
-                        {chart.data.map((entry, i) => (<Cell key={i} fill={entry.color || '#8b5cf6'} />))}
-                        <LabelList 
-                          dataKey="value" 
-                          position="right" 
-                          content={(props: any) => {
-                            const { x, y, width, height, value } = props;
-                            return (
-                              <text x={x + width + 8} y={y + height / 2} fill="#cbd5e1" textAnchor="start" dominantBaseline="middle" className="text-[10px] font-black font-outfit">
-                                {Number(value).toFixed(1)}%
-                              </text>
-                            );
-                          }}
+                      <Tooltip content={<ReportTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+                      <Bar dataKey="value" radius={[0, 3, 3, 0]} barSize={24}>
+                        {chart.data.map((entry, i) => (
+                          <Cell key={i} fill={entry.color || '#06b6d4'} />
+                        ))}
+                        <LabelList
+                          dataKey="value"
+                          position="right"
+                          content={({ x, y, width, height, value }: any) => (
+                            <text
+                              x={Number(x || 0) + Number(width || 0) + 8}
+                              y={Number(y || 0) + Number(height || 0) / 2}
+                              fill="#f8fafc"
+                              textAnchor="start"
+                              dominantBaseline="middle"
+                              className="text-xs font-mono font-semibold"
+                            >
+                              {Number(value).toFixed(1)}%
+                            </text>
+                          )}
                         />
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 )}
               </div>
-              
-              <DataTable columns={["Resposta", "%"]} data={chart.data} />
+
+              <DataTable columns={['Resposta', '%']} data={chart.data} />
             </div>
           ))}
         </div>
@@ -312,22 +335,6 @@ const EvaluationBlock: React.FC<EvaluationBlockProps> = ({
     </section>
   );
 };
-
-const SECTIONS = [
-  'hero-report',
-  'index',
-  'methodology',
-  'gov-spont',
-  'gov-stim',
-  'gov-2',
-  'sen-spont',
-  'sen-1',
-  'sen-2',
-  'sen-3',
-  'sen-4',
-  'eval-fed',
-  'eval-state'
-];
 
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
@@ -350,234 +357,303 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050b14] text-[#fafafa] selection:bg-cyan-500/30 font-sans pb-40 overflow-x-hidden scroll-smooth text-left">
-      
-      {/* Background Decor */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-         <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-sky-500/5 blur-[180px] rounded-full" />
-         <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
-      </div>
-
-      {/* Floating Controls Overlay */}
-      <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3 pointer-events-none">
-         <motion.button 
-           initial={{ opacity: 0, scale: 0.8 }}
-           animate={{ opacity: 1, scale: 1 }}
-           onClick={onBack}
-           className="p-4 px-5 rounded-2xl bg-cyan-500 text-slate-950 font-black pointer-events-auto transition-all shadow-2xl hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group font-outfit"
-           title="Retornar ao Hub"
-         >
-           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-           <span className="text-[11px] uppercase tracking-[0.2em]">Retornar ao Hub Principal</span>
-         </motion.button>
-         
-         <div className="flex gap-2">
-            <button 
-              onClick={() => {
-                window.scrollBy({ top: -window.innerHeight * 0.75, behavior: 'smooth' });
-              }}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-cyan-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
-              title="Seção Anterior"
+    <div className="min-h-screen bg-[#050b14] text-slate-100 font-sans overflow-x-hidden text-left">
+      {/* Sticky Top Publication Bar */}
+      <header className="sticky top-0 z-40 bg-[#050b14]/96 border-b border-slate-800 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
-              <ChevronLeft size={20} />
+              <ArrowLeft size={16} />
+              <span>Voltar ao portal</span>
             </button>
-            <button 
-              onClick={() => {
-                window.scrollBy({ top: window.innerHeight * 0.75, behavior: 'smooth' });
-              }}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-cyan-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
-              title="Próxima Seção"
-            >
-              <ChevronRight size={20} />
-            </button>
-         </div>
-      </div>
-
-      {/* Top Bar Navigation */}
-      <header className="sticky top-0 z-40 bg-[#050b14]/95 border-b border-white/10 backdrop-blur-xl py-4 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4 cursor-pointer" onClick={onBack}>
-            <AlgoritmaLogo size="sm" withTagline={true} />
+            <span aria-hidden="true" className="text-slate-700 hidden sm:inline">|</span>
+            <span className="text-xs font-mono text-slate-400 truncate hidden sm:inline">
+              Relatório Oficial · TSE {reportData.header.registration}
+            </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 shrink-0">
             <button
+              type="button"
               onClick={handleShare}
-              className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-300 flex items-center gap-1.5 transition-all"
+              className="px-3 py-2 min-h-[38px] rounded-md border border-slate-800 hover:border-slate-600 text-xs font-medium text-slate-300 hover:text-white inline-flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer"
             >
               {copiedLink ? <Check size={14} className="text-emerald-400" /> : <Share2 size={14} />}
-              <span className="hidden sm:inline">{copiedLink ? 'Link Copiado' : 'Compartilhar'}</span>
+              <span className="hidden sm:inline">{copiedLink ? 'Link copiado' : 'Compartilhar'}</span>
             </button>
 
             <button
+              type="button"
               onClick={() => window.print()}
-              className="px-4 py-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 text-xs font-bold text-sky-200 flex items-center gap-1.5 transition-all"
+              className="px-3.5 py-2 min-h-[38px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer"
             >
               <Download size={14} />
-              <span className="hidden sm:inline">Imprimir / PDF</span>
-            </button>
-
-            <button
-              onClick={onBack}
-              className="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs uppercase tracking-wider hover:bg-cyan-400 transition-all font-outfit"
-            >
-              Fechar Relatório
+              <span>Imprimir / PDF</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* CAPA / HERO REPORT */}
-      <div id="hero-report" className="relative min-h-[50vh] flex flex-col pt-10 px-4">
-        <div className="max-w-7xl mx-auto w-full px-2 md:px-6 flex flex-col items-center text-center">
-          
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-[2px] bg-cyan-400" />
-            <span className="text-[10px] md:text-xs font-bold text-cyan-400 uppercase tracking-[0.25em] font-mono">
-              {reportData.header.badge}
-            </span>
-            <div className="w-8 h-[2px] bg-cyan-400" />
+      {/* Publication Cover */}
+      <section id="hero-report" className="py-12 sm:py-16 border-b border-slate-800/80">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-xs font-mono text-cyan-400 mb-3">
+              Pesquisa eleitoral · Ceará 2026 · Reg. TSE {reportData.header.registration}
+            </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.12]">
+              Relatório geral: Governador, Senador e avaliações de gestão
+            </h1>
+            <p className="text-base text-slate-300 mt-4 leading-relaxed">
+              {reportData.header.description}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-400 mt-4">
+              <span>Período de campo: {reportData.header.period}</span>
+              <span aria-hidden="true">·</span>
+              <span>Contratante: {reportData.header.contractor}</span>
+            </div>
           </div>
 
-          <h1 className="text-3xl md:text-6xl font-black text-white mb-2 tracking-tight leading-tight uppercase font-outfit">
-            {reportData.header.title}
-          </h1>
-
-          <h2 className="text-2xl md:text-5xl font-black text-sky-400 mb-6 tracking-tight leading-tight uppercase font-outfit">
-            {reportData.header.subtitle}
-          </h2>
-
-          <p className="text-xs md:text-sm text-slate-300 max-w-3xl leading-relaxed mb-8 font-medium">
-            {reportData.header.description}
-          </p>
-
-          <div className="grid grid-cols-2 lg:flex lg:flex-wrap justify-center gap-3 md:gap-5 w-full">
-            <StatCard label="Entrevistas" value={reportData.header.sampleSize} sub="Amostra quantitativa" />
-            <StatCard label="Municípios" value={reportData.header.municipalities} sub="Cobertura estadual" />
-            <StatCard label="Margem de Erro" value={reportData.header.marginOfError} sub="Intervalo de confiança" />
-            <StatCard label="Confiança" value={reportData.header.confidence} sub="Padrão estatístico" />
-          </div>
-        </div>
-      </div>
-
-      {/* ÍNDICE GERAL DE NAVEGAÇÃO */}
-      <section id="index" className="py-12 md:py-16 px-4 border-b border-white/5 relative scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-2 md:px-6">
-          <SectionHeader icon={ListOrdered} title="SUMÁRIO EXECUTIVO" subtitle={reportData.index.title} />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {reportData.index.items.map((item) => (
-              <div 
-                key={item.id} 
-                onClick={() => scrollToSection(item.anchor)} 
-                className="flex items-center justify-between p-4 md:p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-cyan-500/10 hover:border-cyan-500/30 transition-all group cursor-pointer shadow-lg"
-              >
-                <div className="flex items-center gap-3.5">
-                  <span className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-slate-900/80 border border-cyan-500/30 flex items-center justify-center text-[10px] md:text-[11px] font-black text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all font-mono">
-                    {item.id}
-                  </span>
-                  <span className="text-[11px] md:text-[12px] font-bold text-slate-300 group-hover:text-white flex flex-col">
-                    {item.label}
-                    <span className="text-[8px] opacity-50 uppercase font-bold font-mono mt-0.5">Seção {item.id}</span>
-                  </span>
+          <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 border border-slate-800/90 rounded-lg bg-[#08101e] divide-y lg:divide-y-0 lg:divide-x divide-slate-800/90">
+            {[
+              { value: reportData.header.sampleSize, label: 'Entrevistas válidas', sub: 'Amostra quantitativa' },
+              { value: reportData.header.municipalities, label: 'Municípios', sub: 'Cobertura estadual' },
+              { value: reportData.header.marginOfError, label: 'Margem de erro', sub: 'Pontos percentuais' },
+              { value: reportData.header.confidence, label: 'Nível de confiança', sub: 'Intervalo estatístico' },
+            ].map((stat, idx) => (
+              <div key={idx} className="p-5">
+                <div className="text-2xl sm:text-3xl font-mono font-semibold text-white tabular-nums">
+                  {stat.value}
                 </div>
-                <span className="text-[9px] font-black text-slate-500 group-hover:text-cyan-400 font-mono">PÁG.{item.page}</span>
+                <div className="text-sm font-medium text-slate-200 mt-1">{stat.label}</div>
+                <div className="text-xs text-slate-400 mt-0.5">{stat.sub}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* BLOCK: FICHA TÉCNICA */}
-      <section id="methodology" className="py-12 md:py-16 px-4 border-b border-white/5 relative scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-2 md:px-6">
-          <SectionHeader icon={BookOpen} title="METODOLOGIA E CONTROLE" subtitle={reportData.methodology.title} />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <div className="p-6 md:p-8 bg-white/[0.01] border border-white/10 rounded-3xl">
-              <h4 className="text-white text-sm md:text-base font-black uppercase tracking-tight mb-6 flex items-center gap-2 font-outfit">
-                <Settings size={16} className="text-cyan-400"/> 
-                Parâmetros Técnicos Registrados
-              </h4>
-              <div className="space-y-3">
+      {/* Table of Contents */}
+      <section id="index" className="py-12 sm:py-16 border-b border-slate-800/80 scroll-mt-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader kicker="Sumário do documento" subtitle="Índice geral de blocos" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 border border-slate-800/90 rounded-lg bg-[#08101e] divide-y divide-slate-800/80">
+            {[
+              ...reportData.index.items,
+              { id: '12', label: 'Glossário de Metodologia', page: '15', anchor: 'glossary' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => scrollToSection(item.anchor)}
+                className="flex items-baseline justify-between gap-4 px-5 py-4 text-left hover:bg-slate-900/60 transition-colors cursor-pointer md:odd:border-r md:odd:border-slate-800/80"
+              >
+                <div className="flex items-baseline gap-3 min-w-0">
+                  <span className="font-mono text-xs text-cyan-400 tabular-nums shrink-0">
+                    {item.id}.
+                  </span>
+                  <span className="text-sm font-medium text-slate-200 hover:text-white truncate">
+                    {item.label}
+                  </span>
+                </div>
+                <span className="text-xs font-mono text-slate-500 tabular-nums shrink-0">
+                  p. {item.page}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Methodology & Technical Specs */}
+      <section id="methodology" className="py-12 sm:py-16 border-b border-slate-800/80 scroll-mt-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader kicker="Bloco 01 · Ficha técnica" subtitle="Metodologia e controle de qualidade" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="p-6 bg-[#08101e] border border-slate-800/90 rounded-lg">
+              <h3 className="text-base font-semibold text-white pb-3 border-b border-slate-800">
+                Parâmetros técnicos registrados
+              </h3>
+              <dl className="divide-y divide-slate-800/70 mt-2 text-sm">
                 {Object.entries(reportData.methodology.technicalParams).map(([key, val]) => (
-                  <div key={key} className="flex justify-between border-b border-white/5 pb-2.5 text-xs">
-                    <span className="text-slate-400 font-bold uppercase">{key}</span>
-                    <span className="text-white font-mono font-bold text-right">{val}</span>
+                  <div key={key} className="py-3 flex justify-between gap-4">
+                    <dt className="text-slate-400">{key}</dt>
+                    <dd className="text-slate-100 font-mono text-xs sm:text-sm text-right tabular-nums">
+                      {val}
+                    </dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </div>
 
-            <div className="p-6 md:p-8 bg-white/[0.01] border border-white/10 rounded-3xl flex flex-col justify-between">
+            <div className="p-6 bg-[#08101e] border border-slate-800/90 rounded-lg flex flex-col justify-between gap-6">
               <div>
-                <h4 className="text-white text-sm md:text-base font-black uppercase tracking-tight mb-4 font-outfit">
-                  Estratificação da Amostra
-                </h4>
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                <h3 className="text-base font-semibold text-white pb-3 border-b border-slate-800">
+                  Estratificação da amostra
+                </h3>
+                <p className="text-sm text-slate-300 leading-relaxed mt-4">
                   {reportData.methodology.stratification.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {reportData.methodology.stratification.quotas.map(q => (
-                    <span key={q} className="px-3 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-[9px] md:text-[10px] font-black text-sky-300 uppercase font-mono">
-                      {q}
-                    </span>
+                <ul className="mt-4 divide-y divide-slate-800/70 border-t border-slate-800/70 text-sm text-slate-200">
+                  {reportData.methodology.stratification.quotas.map((q, idx) => (
+                    <li key={q} className="py-2.5 flex items-baseline gap-2.5">
+                      <span className="font-mono text-xs text-cyan-400 tabular-nums">0{idx + 1}.</span>
+                      <span>{q}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
-
-              <div className="mt-6 pt-4 border-t border-white/10 text-xs text-slate-400">
-                Responsável Técnico: Equipe de Estatística Algoritma Dados · Registro CONRE
+              <div className="pt-4 border-t border-slate-800 text-xs text-slate-400">
+                Responsável técnico: Equipe de Estatística Algoritma Dados · Registro CONRE
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* BLOCK: GOVERNADOR */}
-      <DataSection id="gov-spont" icon={Landmark} title="GOVERNADOR DO CEARÁ" subtitle="Cenário Espontâneo" questionId="Q5 · ESPONTÂNEA" questionText={reportData.governor.spontaneous.question} questionColor="amber" chartTitle={reportData.governor.spontaneous.title} chartData={reportData.governor.spontaneous.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.governor.spontaneous.total} />
-      <DataSection id="gov-stim" icon={Landmark} title="GOVERNADOR DO CEARÁ" subtitle="Cenário Estimulado 1º Turno" questionId="Q6 · ESTIMULADA" questionText={reportData.governor.stimulated.question} questionColor="blue" chartTitle={reportData.governor.stimulated.title} chartData={reportData.governor.stimulated.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.governor.stimulated.total} />
-      <DataSection id="gov-2" icon={Landmark} title="GOVERNADOR DO CEARÁ" subtitle="Cenário de Segundo Turno" questionId="Q7 · 2º TURNO" questionText={reportData.governor.secondTurn.question} questionColor="indigo" chartTitle={reportData.governor.secondTurn.title} chartData={reportData.governor.secondTurn.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.governor.secondTurn.total} />
+      {/* Governor Scenarios */}
+      <DataSection
+        id="gov-spont"
+        kicker="Bloco 02 · Governador do Ceará"
+        subtitle="Intenção de voto espontânea"
+        questionId="Q5 · Espontânea"
+        questionText={reportData.governor.spontaneous.question}
+        chartTitle={reportData.governor.spontaneous.title}
+        chartData={reportData.governor.spontaneous.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.governor.spontaneous.total}
+      />
+      <DataSection
+        id="gov-stim"
+        kicker="Bloco 03 · Governador do Ceará"
+        subtitle="Cenário estimulado — 1º turno"
+        questionId="Q6 · Estimulada"
+        questionText={reportData.governor.stimulated.question}
+        chartTitle={reportData.governor.stimulated.title}
+        chartData={reportData.governor.stimulated.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.governor.stimulated.total}
+      />
+      <DataSection
+        id="gov-2"
+        kicker="Bloco 04 · Governador do Ceará"
+        subtitle="Cenário de segundo turno"
+        questionId="Q7 · 2º Turno"
+        questionText={reportData.governor.secondTurn.question}
+        chartTitle={reportData.governor.secondTurn.title}
+        chartData={reportData.governor.secondTurn.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.governor.secondTurn.total}
+      />
 
-      {/* BLOCK: SENADOR */}
-      <DataSection id="sen-spont" icon={UserCheck} title="SENADO FEDERAL" subtitle="Espontânea (1º Nome)" questionId="Q8 · ESPONTÂNEA" questionText={reportData.senator.spontaneous.question} questionColor="purple" chartTitle={reportData.senator.spontaneous.title} chartData={reportData.senator.spontaneous.data} columns={["Candidato / Resposta (1º Nome)", "N", "%"]} total={reportData.senator.spontaneous.total} />
-      <DataSection id="sen-1" icon={UserCheck} title="SENADO FEDERAL" subtitle="Cenário Estimulado 01" questionId="Q9 · ESTIMULADA 01" questionText={reportData.senator.stimulated_01.question} questionColor="violet" chartTitle={reportData.senator.stimulated_01.title} chartData={reportData.senator.stimulated_01.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.senator.stimulated_01.total} />
-      <DataSection id="sen-2" icon={UserCheck} title="SENADO FEDERAL" subtitle="Cenário Estimulado 02" questionId="Q10 · ESTIMULADA 02" questionText={reportData.senator.stimulated_02.question} questionColor="cyan" chartTitle={reportData.senator.stimulated_02.title} chartData={reportData.senator.stimulated_02.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.senator.stimulated_02.total} />
-      <DataSection id="sen-3" icon={UserCheck} title="SENADO FEDERAL" subtitle="Cenário Estimulado 03" questionId="Q11 · ESTIMULADA 03" questionText={reportData.senator.stimulated_03.question} questionColor="rose" chartTitle={reportData.senator.stimulated_03.title} chartData={reportData.senator.stimulated_03.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.senator.stimulated_03.total} />
-      <DataSection id="sen-4" icon={UserCheck} title="SENADO FEDERAL" subtitle="Cenário Estimulado 04" questionId="Q12 · ESTIMULADA 04" questionText={reportData.senator.stimulated_04.question} questionColor="emerald" chartTitle={reportData.senator.stimulated_04.title} chartData={reportData.senator.stimulated_04.data} columns={["Candidato / Resposta", "N", "%"]} total={reportData.senator.stimulated_04.total} />
+      {/* Senate Scenarios */}
+      <DataSection
+        id="sen-spont"
+        kicker="Bloco 05 · Senado Federal"
+        subtitle="Intenção de voto espontânea (1º nome)"
+        questionId="Q8 · Espontânea"
+        questionText={reportData.senator.spontaneous.question}
+        chartTitle={reportData.senator.spontaneous.title}
+        chartData={reportData.senator.spontaneous.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.senator.spontaneous.total}
+      />
+      <DataSection
+        id="sen-1"
+        kicker="Bloco 06 · Senado Federal"
+        subtitle="Cenário estimulado 01"
+        questionId="Q9 · Estimulada 01"
+        questionText={reportData.senator.stimulated_01.question}
+        chartTitle={reportData.senator.stimulated_01.title}
+        chartData={reportData.senator.stimulated_01.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.senator.stimulated_01.total}
+      />
+      <DataSection
+        id="sen-2"
+        kicker="Bloco 07 · Senado Federal"
+        subtitle="Cenário estimulado 02"
+        questionId="Q10 · Estimulada 02"
+        questionText={reportData.senator.stimulated_02.question}
+        chartTitle={reportData.senator.stimulated_02.title}
+        chartData={reportData.senator.stimulated_02.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.senator.stimulated_02.total}
+      />
+      <DataSection
+        id="sen-3"
+        kicker="Bloco 08 · Senado Federal"
+        subtitle="Cenário estimulado 03"
+        questionId="Q11 · Estimulada 03"
+        questionText={reportData.senator.stimulated_03.question}
+        chartTitle={reportData.senator.stimulated_03.title}
+        chartData={reportData.senator.stimulated_03.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.senator.stimulated_03.total}
+      />
+      <DataSection
+        id="sen-4"
+        kicker="Bloco 09 · Senado Federal"
+        subtitle="Cenário estimulado 04"
+        questionId="Q12 · Estimulada 04"
+        questionText={reportData.senator.stimulated_04.question}
+        chartTitle={reportData.senator.stimulated_04.title}
+        chartData={reportData.senator.stimulated_04.data}
+        columns={['Candidato / Resposta', 'n', '%']}
+        total={reportData.senator.stimulated_04.total}
+      />
 
-      {/* BLOCK: EVALUATIONS */}
-      <EvaluationBlock id="eval-fed" icon={Activity} title="AVALIAÇÃO FEDERAL" subtitle="Presidente Lula" questionId="Q13 / Q14 · AVALIAÇÃO" questionText={reportData.evaluations.federal.question} questionColor="green" approvalData={reportData.evaluations.federal.approval} qualitativeData={reportData.evaluations.federal.qualitative} />
-      <EvaluationBlock id="eval-state" icon={Award} title="AVALIAÇÃO ESTADUAL" subtitle="Gov. Elmano de Freitas" questionId="Q15 / Q16 · AVALIAÇÃO" questionText={reportData.evaluations.state.question} questionColor="sky" approvalData={reportData.evaluations.state.approval} qualitativeData={reportData.evaluations.state.qualitative} />
+      {/* Evaluations */}
+      <EvaluationBlock
+        id="eval-fed"
+        kicker="Bloco 10 · Avaliação federal"
+        subtitle="Administração do Presidente Lula"
+        questionId="Q13 / Q14 · Avaliação"
+        questionText={reportData.evaluations.federal.question}
+        approvalData={reportData.evaluations.federal.approval}
+        qualitativeData={reportData.evaluations.federal.qualitative}
+      />
+      <EvaluationBlock
+        id="eval-state"
+        kicker="Bloco 11 · Avaliação estadual"
+        subtitle="Administração do Governador Elmano de Freitas"
+        questionId="Q15 / Q16 · Avaliação"
+        questionText={reportData.evaluations.state.question}
+        approvalData={reportData.evaluations.state.approval}
+        qualitativeData={reportData.evaluations.state.qualitative}
+      />
 
-      {/* FINAL FOOTER */}
-      <footer className="py-16 bg-[#03070e] text-center border-t border-white/5 px-6 backdrop-blur-3xl">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="flex flex-col items-center gap-3">
-             <AlgoritmaLogo size="md" withTagline={true} />
-             <div className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.4em] font-mono">
-               Pesquisa e Inteligência de Dados
-             </div>
+      {/* Methodology Glossary */}
+      <MethodologyGlossary variant="section" />
+
+      {/* Report Footer */}
+      <footer className="py-12 bg-[#03070e] border-t border-slate-800/80">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-3 max-w-xl">
+            <AlgoritmaLogo size="sm" withTagline={true} />
+            <p className="text-xs text-slate-400 leading-relaxed">
+              {reportData.index.disclaimer}
+            </p>
+            <p className="text-xs font-mono text-slate-500">
+              contato@algoritmadados.com.br · algoritmadados.com.br · Reg. TSE {reportData.header.registration}
+            </p>
           </div>
-          
-          <div className="h-0.5 w-24 bg-cyan-500/30 mx-auto" />
-          
-          <p className="text-xs text-slate-400 leading-relaxed max-w-2xl mx-auto italic">
-            {reportData.index.disclaimer}
-          </p>
-          
-          <div className="flex justify-center gap-8 text-[10px] font-mono text-slate-500 uppercase tracking-widest pt-4">
-             <span>MARÇO 2026</span>
-             <span>•</span>
-             <span>CEARÁ</span>
-             <span>•</span>
-             <span>BRASIL</span>
-             <span>•</span>
-             <span>REGISTRO TSE CE-07550/2026</span>
-          </div>
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-4 py-2.5 rounded-md border border-slate-700 hover:border-cyan-400 text-xs font-medium text-slate-200 hover:text-white inline-flex items-center gap-2 transition-colors whitespace-nowrap cursor-pointer"
+          >
+            <ArrowLeft size={14} />
+            <span>Retornar ao portal</span>
+          </button>
         </div>
       </footer>
-
     </div>
   );
 };

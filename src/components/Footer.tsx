@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Globe, TrendingUp, ShieldCheck, Mail, ArrowRight, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { AlgoritmaLogo } from './AlgoritmaLogo';
+import { MethodologyGlossary } from './MethodologyGlossary';
 
 interface FooterProps {
   onExploreReport: () => void;
@@ -13,121 +14,169 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (email.trim()) {
       setSubscribed(true);
     }
   };
 
   return (
-    <footer className="py-20 bg-[#03070e] border-t border-white/5 text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        
-        {/* Top Newsletter Strip */}
-        <div className="p-6 md:p-10 rounded-3xl bg-white/[0.02] border border-white/10 mb-16 flex flex-col lg:flex-row items-center justify-between gap-6">
-          <div className="max-w-xl">
-            <span className="text-[10px] font-black text-cyan-400 uppercase tracking-widest font-mono">
-              NEWSLETTER SEMANAL DE DADOS
-            </span>
-            <h4 className="text-xl md:text-2xl font-black text-white uppercase font-outfit mt-1">
-              Receba os Próximos Snapshots Eleitorais e de Mercado
+    <footer className="py-16 bg-[#03070e] text-left">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Newsletter Subscription Bar */}
+        <div className="pb-12 mb-12 border-b border-slate-800/80 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-7">
+            <p className="text-xs font-mono text-cyan-400 mb-1">Boletim técnico</p>
+            <h4 className="text-lg sm:text-xl font-semibold text-white">
+              Receba novas séries eleitorais e notas metodológicas
             </h4>
-            <p className="text-xs text-slate-400 mt-1">
-              Análises exclusivas com gráficos e insights antes da divulgação aberta à imprensa.
+            <p className="text-sm text-slate-400 mt-1">
+              Envio periódico de relatórios públicos, registros no TSE e estudos de opinião da Algoritma Dados.
             </p>
           </div>
 
-          <div className="w-full lg:w-auto">
+          <div className="lg:col-span-5">
             {subscribed ? (
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold font-mono">
+              <div className="inline-flex items-center gap-2 text-emerald-400 text-sm font-medium">
                 <Check size={16} />
-                <span>Inscrição confirmada com sucesso!</span>
+                <span>Inscrição confirmada para {email}.</span>
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2 w-full max-w-md">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Seu e-mail corporativo..."
-                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 flex-1"
+                  placeholder="E-mail corporativo"
+                  aria-label="E-mail corporativo para boletim técnico"
+                  className="bg-[#08101e] border border-slate-800 rounded-md px-3.5 py-2.5 min-h-[42px] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 flex-1"
                 />
                 <button
                   type="submit"
-                  className="px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider font-outfit transition-all shrink-0"
+                  className="px-5 py-2.5 min-h-[42px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
-                  Assinar
+                  Inscrever-se
                 </button>
               </form>
             )}
           </div>
         </div>
 
-        {/* 4 Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          <div className="md:col-span-2 space-y-6">
+        {/* Editorial Methodology Glossary Reference */}
+        <MethodologyGlossary variant="footer" />
+
+        {/* Institutional Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-14">
+          <div className="md:col-span-5 space-y-4">
             <AlgoritmaLogo size="md" withTagline={true} />
-            <p className="text-slate-400 text-sm max-w-md leading-relaxed">
-              Autoridade em dados, rigor em campo e inteligência estratégica para governos, partidos, instituições e grandes marcas em todo o território nacional.
+            <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
+              Instituto independente de pesquisa quantitativa e inteligência de dados com central própria de Call Center (CATI e chat digital) e operações presenciais integradas.
             </p>
-            <div className="flex items-center gap-3 text-xs text-slate-400">
-              <ShieldCheck size={16} className="text-emerald-400" />
-              <span>Registro Oficial TSE CE-07550/2026</span>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <h6 className="text-xs font-black text-white uppercase tracking-[0.25em] font-mono">
-              Estudos & Portal
-            </h6>
-            <div className="flex flex-col gap-2.5 text-xs text-slate-400 font-medium">
-              <a href="#inicio" className="hover:text-cyan-400 transition-colors">Início & Destaques</a>
-              <button onClick={onExploreReport} className="text-left hover:text-cyan-400 transition-colors">
-                Pesquisa Ceará 2026 (Relatório)
-              </button>
-              <a href="#simulador" className="hover:text-cyan-400 transition-colors">Simulador de Votos</a>
-              <a href="#noticias" className="hover:text-cyan-400 transition-colors">Arquivo de Notícias</a>
-              <a href="#metodologia" className="hover:text-cyan-400 transition-colors">Ficha Técnica & Protocolos</a>
-            </div>
+            <p className="text-xs font-mono text-slate-500">
+              Registro de referência: TSE CE-07550/2026
+            </p>
           </div>
 
-          <div className="space-y-4">
-            <h6 className="text-xs font-black text-white uppercase tracking-[0.25em] font-mono">
-              Sedes & Contato
-            </h6>
-            <div className="flex flex-col gap-2.5 text-xs text-slate-400 font-medium">
-              <span>Fortaleza, CE — Av. Santos Dumont</span>
-              <span>São Paulo, SP — Av. Paulista</span>
-              <span>contato@algoritmadados.com.br</span>
-              <button onClick={onOpenQuote} className="text-left text-cyan-400 font-bold hover:underline">
-                → Solicitar Orçamento de Campo
-              </button>
+          <div className="md:col-span-3 space-y-3">
+            <h5 className="text-xs font-mono font-medium text-slate-300">
+              Seções do portal
+            </h5>
+            <ul className="space-y-2.5 text-sm text-slate-400">
+              <li>
+                <a href="#inicio" className="hover:text-cyan-400 transition-colors">
+                  Capa e boletins
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={onExploreReport}
+                  className="text-left hover:text-cyan-400 transition-colors cursor-pointer"
+                >
+                  Relatório Ceará 2026
+                </button>
+              </li>
+              <li>
+                <a href="#simulador" className="hover:text-cyan-400 transition-colors">
+                  Laboratório de cenários 2026
+                </a>
+              </li>
+              <li>
+                <a href="#call-center" className="hover:text-cyan-400 transition-colors">
+                  Estrutura de Call Center
+                </a>
+              </li>
+              <li>
+                <a href="#metodologia" className="hover:text-cyan-400 transition-colors">
+                  Metodologia e ficha técnica
+                </a>
+              </li>
+              <li>
+                <a href="#governanca" className="hover:text-cyan-400 transition-colors">
+                  Nossa governança
+                </a>
+              </li>
+              <li>
+                <a href="#noticias" className="hover:text-cyan-400 transition-colors">
+                  Arquivo de publicações
+                </a>
+              </li>
+              <li>
+                <a href="#glossario" className="hover:text-cyan-400 transition-colors">
+                  Glossário de metodologia
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-4 space-y-3">
+            <h5 className="text-xs font-mono font-medium text-slate-300">
+              Contato institucional
+            </h5>
+            <div className="space-y-2.5 text-sm text-slate-400">
+              <p>Fortaleza, CE — Av. Santos Dumont</p>
+              <p>São Paulo, SP — Av. Paulista</p>
+              <p>
+                <a
+                  href="mailto:contato@algoritmadados.com.br"
+                  className="text-slate-200 hover:text-cyan-400 transition-colors"
+                >
+                  contato@algoritmadados.com.br
+                </a>
+              </p>
+              <p className="font-mono text-xs text-slate-500">algoritmadados.com.br</p>
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={onOpenQuote}
+                  className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
+                >
+                  Solicitar orçamento de pesquisa →
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+        {/* Bottom Legal Line */}
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs text-slate-500">
           <div>
-            © 2026 Algoritma Dados Pesquisa e Inteligência. Todos os direitos reservados.
+            © 2026 Algoritma Dados. Todos os direitos reservados.
           </div>
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-settings'))}
-              className="hover:text-cyan-400 underline decoration-dotted underline-offset-4 transition-colors"
+              className="hover:text-cyan-400 underline decoration-slate-700 underline-offset-4 transition-colors cursor-pointer"
             >
-              Preferências de Cookies
+              Preferências de cookies
             </button>
-            <span className="text-slate-600">|</span>
-            <span>LGPD Compliance</span>
-            <span className="text-slate-600">|</span>
-            <span>Auditoria 100%</span>
-            <span className="text-slate-600">|</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <span>LGPD (Lei 13.709/2018)</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
             <span>Resolução-TSE 23.600/2019</span>
           </div>
         </div>
-
       </div>
     </footer>
   );

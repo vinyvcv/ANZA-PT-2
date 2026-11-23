@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { PortalHero } from './components/PortalHero';
 import { InteractiveSimulator } from './components/InteractiveSimulator';
+import { CallCenterOperations } from './components/CallCenterOperations';
 import { MethodologyShowcase } from './components/MethodologyShowcase';
+import { GovernanceSection } from './components/GovernanceSection';
 import { NewsGrid } from './components/NewsGrid';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { QuoteModal } from './components/QuoteModal';
+import { QuoteModal, QuoteMethod } from './components/QuoteModal';
 import { ArticleModal } from './components/ArticleModal';
 import { Article } from './data/newsData';
-import { ShieldCheck, Award, Users, CheckCircle2, ChevronRight, BarChart3, Calculator } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 interface LandingPageProps {
   onExplore: () => void;
@@ -17,111 +19,94 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onExplore }) => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [quoteInitialMethod, setQuoteInitialMethod] = useState<QuoteMethod>('cati');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
+  const openQuoteWithMethod = (method: QuoteMethod = 'cati') => {
+    setQuoteInitialMethod(method);
+    setIsQuoteModalOpen(true);
+  };
+
   return (
-    <div className="min-h-screen bg-[#050b14] text-white selection:bg-cyan-500/30 selection:text-cyan-200 font-sans overflow-x-hidden">
-      
-      {/* Top Fixed Navigation */}
-      <Navbar 
-        onExplore={onExplore} 
-        onOpenQuote={() => setIsQuoteModalOpen(true)} 
+    <div className="min-h-screen bg-[#050b14] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200 font-sans overflow-x-hidden">
+      {/* Top Institutional Navigation */}
+      <Navbar
+        onExplore={onExplore}
+        onOpenQuote={() => openQuoteWithMethod('cati')}
       />
 
       <main>
-        {/* Hero Section & Live Intelligence Feed */}
-        <PortalHero 
+        {/* Front-Page Editorial Hero & Bulletins Rail */}
+        <PortalHero
           onExplore={onExplore}
-          onOpenQuote={() => setIsQuoteModalOpen(true)}
+          onOpenQuote={() => openQuoteWithMethod('cati')}
           onSelectArticle={(article) => setSelectedArticle(article)}
         />
 
-        {/* Ticker de Autoridade */}
-        <div className="py-6 bg-white/[0.02] border-y border-white/5 font-mono overflow-hidden">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-8 px-4 overflow-x-auto scrollbar-none opacity-70">
-            {[
-              'REFERÊNCIA EM CAMPO NACIONAL',
-              'AUDITORIA 100% DE GRAVAÇÃO',
-              'TECNOLOGIA CATI & CAPI',
-              'RIGOR METODOLÓGICO TSE',
-              'AMOSTRAGEM PROBABILÍSTICA',
-              'ENTREGAS EM ATÉ 48 HORAS'
-            ].map((item, idx) => (
-              <span 
-                key={idx} 
-                className="font-bold text-[10px] tracking-[0.3em] uppercase whitespace-nowrap flex items-center gap-4 text-sky-300"
-              >
-                <span>{item}</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Callout Strip for Official 2026 Survey */}
-        <section id="eleitoral" className="py-12 bg-gradient-to-r from-slate-900/60 via-sky-950/30 to-cyan-950/30 border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
-                <BarChart3 size={24} />
-              </div>
-              <div>
-                <span className="text-[10px] font-black text-cyan-400 uppercase tracking-widest font-mono">
-                  PESQUISA ELEITORAL OFICIAL
-                </span>
-                <h3 className="text-xl md:text-2xl font-black text-white uppercase font-outfit">
-                  Eleições Ceará 2026: Governador, Senador & Avaliações
-                </h3>
-                <p className="text-xs text-slate-300">
-                  1.225 entrevistas em 34 municípios · Margem ±2,8% · Confiança 95% · Reg. TSE CE-07550/2026
-                </p>
-              </div>
+        {/* Official 2026 Survey Publication Banner */}
+        <section id="eleitoral" className="py-10 bg-[#08101e] border-b border-slate-800/80">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left">
+            <div className="space-y-1">
+              <p className="text-xs font-mono text-cyan-400">
+                Publicação oficial · Reg. TSE CE-07550/2026
+              </p>
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
+                Pesquisa Eleitoral Ceará 2026: Governador, Senado e avaliações de gestão
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-400 font-mono tabular-nums">
+                1.225 entrevistas válidas em 34 municípios · Margem ±2,8 p.p. · Confiança 95%
+              </p>
             </div>
 
-            <div className="flex items-center gap-3 w-full md:w-auto">
-              <button
-                onClick={onExplore}
-                className="flex-1 md:flex-none px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2 font-outfit"
-              >
-                <span>Acessar Relatório Completo</span>
-                <ChevronRight size={16} />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onExplore}
+              className="self-start md:self-auto px-5 py-2.5 min-h-[42px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              <span>Acessar relatório completo</span>
+              <ChevronRight size={16} />
+            </button>
           </div>
         </section>
 
-        {/* Interactive Simulation & Scenario Lab */}
+        {/* Interactive Electoral 2026 Scenario Lab */}
         <InteractiveSimulator onExploreReport={onExplore} />
 
-        {/* Methodology & Quality Assurance Protocol */}
+        {/* Dedicated Call Center & Multi-Channel Research Operations */}
+        <CallCenterOperations onOpenQuote={openQuoteWithMethod} />
+
+        {/* Methodology & Technical Specification Sheet */}
         <MethodologyShowcase />
 
-        {/* News & Intelligence Archive */}
+        {/* Institutional Governance: Ethics, LGPD & Statistical Rigor */}
+        <GovernanceSection />
+
+        {/* Publications & Electoral Justice Archive */}
         <NewsGrid onSelectArticle={(article) => setSelectedArticle(article)} />
 
-        {/* Field Research Briefing & Contact */}
+        {/* Institutional Briefing & Contact */}
         <ContactSection />
       </main>
 
-      {/* Footer */}
-      <Footer 
-        onExploreReport={onExplore} 
-        onOpenQuote={() => setIsQuoteModalOpen(true)} 
+      {/* Institutional Footer */}
+      <Footer
+        onExploreReport={onExplore}
+        onOpenQuote={() => openQuoteWithMethod('cati')}
       />
 
-      {/* Interactive Modal: Quote Builder */}
-      <QuoteModal 
-        isOpen={isQuoteModalOpen} 
-        onClose={() => setIsQuoteModalOpen(false)} 
+      {/* Interactive Modal: Scope & Quote Builder */}
+      <QuoteModal
+        isOpen={isQuoteModalOpen}
+        onClose={() => setIsQuoteModalOpen(false)}
+        initialMethod={quoteInitialMethod}
       />
 
-      {/* Interactive Modal: Article Reader */}
-      <ArticleModal 
-        article={selectedArticle} 
+      {/* Interactive Modal: Editorial Article Reader */}
+      <ArticleModal
+        article={selectedArticle}
         onClose={() => setSelectedArticle(null)}
         onExploreReport={onExplore}
       />
-
     </div>
   );
 };

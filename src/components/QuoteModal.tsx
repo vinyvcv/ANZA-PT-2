@@ -1,304 +1,398 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Calculator, Send, ShieldCheck, MapPin, Users, PhoneCall } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import React, { useState, useEffect } from 'react';
+import { X, Check, Send } from 'lucide-react';
+
+export type QuoteMethod = 'cati' | 'chat' | 'hybrid';
 
 interface QuoteModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialMethod?: QuoteMethod;
 }
 
-export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
-  const [methodology, setMethodology] = useState<'phone' | 'field' | 'hybrid'>('phone');
+export const QuoteModal: React.FC<QuoteModalProps> = ({
+  isOpen,
+  onClose,
+  initialMethod = 'cati',
+}) => {
+  const [methodology, setMethodology] = useState<QuoteMethod>(initialMethod);
   const [sampleSize, setSampleSize] = useState<number>(1200);
   const [urgency, setUrgency] = useState<'standard' | 'fast' | 'express'>('fast');
   const [formData, setFormData] = useState({
     organization: '',
     name: '',
     email: '',
-    phone: '',
-    state: 'Ceará',
+    region: 'Ceará',
     notes: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const calculateEstimate = () => {
-    let base = methodology === 'phone' ? 18 : methodology === 'field' ? 38 : 28;
-    let multiplier = urgency === 'express' ? 1.4 : urgency === 'fast' ? 1.15 : 1.0;
-    const est = Math.round(sampleSize * base * multiplier);
-    return {
-      days: urgency === 'express' ? '48 horas' : urgency === 'fast' ? '4 a 5 dias úteis' : '8 a 10 dias úteis',
-      confidence: sampleSize >= 1500 ? '95% (±2,5%)' : sampleSize >= 1000 ? '95% (±2,8%)' : '95% (±3,5%)',
-      coverage: sampleSize >= 1500 ? 'Até 45 municípios' : sampleSize >= 1000 ? 'Até 35 municípios' : 'Até 15 municípios',
+  useEffect(() => {
+    setMethodology(initialMethod);
+  }, [initialMethod, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
     };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const methodOptions: {
+    id: QuoteMethod;
+    title: string;
+    subtitle: string;
+    detail: string;
+  }[] = [
+    {
+      id: 'cati',
+      title: 'Call Center — Ligação (CATI)',
+      subtitle: 'Central própria por voz',
+      detail: 'Discagem estratificada, gravação integral de 100% das entrevistas e supervisão ativa.',
+    },
+    {
+      id: 'chat',
+      title: 'Call Center — Chat & Digital',
+      subtitle: 'WhatsApp e mensageria web',
+      detail: 'Coleta humanizada estruturada com validação de perfil e controle anti-duplicidade.',
+    },
+    {
+      id: 'hybrid',
+      title: 'Operação Híbrida / Presencial',
+      subtitle: 'CAPI georreferenciado + Central',
+      detail: 'Campo presencial com GPS integrado à central de call center para cobertura mista.',
+    },
+  ];
+
+  const methodLabels: Record<QuoteMethod, string> = {
+    cati: 'Call Center — Ligação (CATI)',
+    chat: 'Call Center — Chat & Digital',
+    hybrid: 'Operação Híbrida / Presencial (CAPI)',
   };
 
-  const estimate = calculateEstimate();
+  const marginOfError =
+    sampleSize >= 2000
+      ? '±2,2 p.p.'
+      : sampleSize >= 1500
+      ? '±2,5 p.p.'
+      : sampleSize >= 1000
+      ? '±2,8 p.p.'
+      : sampleSize >= 600
+      ? '±4,0 p.p.'
+      : '±4,9 p.p.';
+
+  const coverage =
+    sampleSize >= 2000
+      ? '45+ municípios ou recorte nacional'
+      : sampleSize >= 1200
+      ? '25 a 40 municípios (estadual)'
+      : '1 a 15 municípios (local / regional)';
+
+  const leadTime =
+    urgency === 'express'
+      ? '48 horas'
+      : urgency === 'fast'
+      ? '4 a 5 dias úteis'
+      : '7 a 10 dias úteis';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#06b6d4', '#38bdf8', '#10b981', '#ffffff'],
-    });
+  };
+
+  const handleResetAndClose = () => {
+    setSubmitted(false);
+    onClose();
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md"
-          />
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="quote-modal-title"
+    >
+      {/* Backdrop */}
+      <div
+        onClick={handleResetAndClose}
+        className="fixed inset-0 bg-black/75 backdrop-blur-xs"
+      />
 
-          {/* Modal Content */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-3xl my-8 bg-[#08101e] border border-cyan-500/30 rounded-3xl p-6 md:p-10 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
-          >
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
-            >
-              <X size={20} />
-            </button>
+      {/* Modal Panel */}
+      <div className="relative w-full max-w-3xl my-6 bg-[#08101e] border border-slate-800 rounded-lg p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto text-left">
+        <button
+          type="button"
+          onClick={handleResetAndClose}
+          className="absolute top-5 right-5 p-2 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-md border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 transition-colors cursor-pointer"
+          aria-label="Fechar janela de orçamento"
+        >
+          <X size={18} />
+        </button>
 
-            {submitted ? (
-              <div className="text-center py-12 space-y-6">
-                <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                  <CheckCircle2 size={44} />
-                </div>
-                <h3 className="text-3xl font-black text-white uppercase font-outfit">
-                  Briefing Recebido com Sucesso!
-                </h3>
-                <p className="text-slate-300 max-w-md mx-auto text-sm leading-relaxed">
-                  Nossa diretoria técnica entrará em contato em até <strong className="text-cyan-400">2 horas comerciais</strong> com a proposta metodológica e cronograma de campo detalhado.
-                </p>
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left text-xs space-y-2 text-slate-300">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Metodologia:</span>
-                    <strong className="text-white uppercase">{methodology === 'phone' ? 'Telefônica (CATI)' : methodology === 'field' ? 'Presencial (CAPI)' : 'Híbrida'}</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Amostra:</span>
-                    <strong className="text-white">{sampleSize.toLocaleString()} entrevistas</strong>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Prazo Estimado:</span>
-                    <strong className="text-cyan-400">{estimate.days}</strong>
-                  </div>
-                </div>
-                <button
-                  onClick={onClose}
-                  className="px-8 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-widest transition-all"
-                >
-                  Concluir
-                </button>
+        {submitted ? (
+          <div className="py-8 space-y-6">
+            <div className="inline-flex items-center gap-2 text-emerald-400 font-mono text-xs">
+              <Check size={16} />
+              <span>Solicitação registrada</span>
+            </div>
+            <div>
+              <h3 className="text-2xl font-semibold text-white">
+                Proposta metodológica em elaboração
+              </h3>
+              <p className="text-sm text-slate-300 mt-2 leading-relaxed max-w-xl">
+                Recebemos seu briefing e enviaremos o desenho amostral, cronograma e orçamento detalhado para{' '}
+                <span className="text-white font-mono">{formData.email}</span> (ou via{' '}
+                <span className="text-cyan-400 font-mono">contato@algoritmadados.com.br</span>).
+              </p>
+            </div>
+
+            <dl className="border border-slate-800 rounded-md divide-y divide-slate-800 bg-[#050b14] text-sm">
+              <div className="px-4 py-3 flex justify-between gap-4">
+                <dt className="text-slate-400">Modalidade selecionada</dt>
+                <dd className="text-white font-medium text-right">{methodLabels[methodology]}</dd>
               </div>
-            ) : (
+              <div className="px-4 py-3 flex justify-between gap-4">
+                <dt className="text-slate-400">Tamanho amostral</dt>
+                <dd className="text-white font-mono tabular-nums">
+                  {sampleSize.toLocaleString('pt-BR')} entrevistas ({marginOfError})
+                </dd>
+              </div>
+              <div className="px-4 py-3 flex justify-between gap-4">
+                <dt className="text-slate-400">Janela de entrega</dt>
+                <dd className="text-cyan-400 font-mono">{leadTime}</dd>
+              </div>
+              <div className="px-4 py-3 flex justify-between gap-4">
+                <dt className="text-slate-400">Abrangência informada</dt>
+                <dd className="text-white">{formData.region}</dd>
+              </div>
+            </dl>
+
+            <button
+              type="button"
+              onClick={handleResetAndClose}
+              className="px-5 py-2.5 rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition-colors cursor-pointer"
+            >
+              Retornar ao portal
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="pr-10 pb-5 mb-6 border-b border-slate-800">
+              <p className="text-xs font-mono text-cyan-400 mb-1">
+                Dimensionamento e proposta técnica
+              </p>
+              <h2 id="quote-modal-title" className="text-2xl font-semibold text-white">
+                Configurar estudo de pesquisa
+              </h2>
+              <p className="text-sm text-slate-400 mt-1">
+                Selecione o canal da nossa equipe de Call Center ou operação presencial, a amostra e o prazo de entrega.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Step 1: Collection Channel */}
               <div>
-                <div className="flex items-center gap-3 text-cyan-400 mb-2">
-                  <Calculator size={20} />
-                  <span className="text-xs font-black uppercase tracking-[0.3em] font-mono">
-                    SIMULADOR & ORÇAMENTO DE CAMPO
+                <label className="block text-xs font-medium text-slate-300 mb-2.5">
+                  1. Modalidade de coleta
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {methodOptions.map((m) => {
+                    const active = methodology === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMethodology(m.id)}
+                        className={`p-4 rounded-md border text-left transition-colors cursor-pointer ${
+                          active
+                            ? 'bg-cyan-500/12 border-cyan-400'
+                            : 'bg-[#050b14] border-slate-800 hover:border-slate-600'
+                        }`}
+                      >
+                        <div className="text-xs font-semibold text-white leading-snug">
+                          {m.title}
+                        </div>
+                        <div className="text-[11px] font-mono text-cyan-400 mt-1">
+                          {m.subtitle}
+                        </div>
+                        <p className="text-xs text-slate-400 mt-2 leading-relaxed">{m.detail}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Step 2: Sample Size */}
+              <div>
+                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2.5">
+                  <label htmlFor="quote-sample-range" className="text-xs font-medium text-slate-300">
+                    2. Tamanho amostral:{' '}
+                    <span className="font-mono font-semibold text-white tabular-nums">
+                      {sampleSize.toLocaleString('pt-BR')} entrevistas
+                    </span>
+                  </label>
+                  <span className="text-xs font-mono text-cyan-400 tabular-nums">
+                    Confiança 95% · Margem {marginOfError}
                   </span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight font-outfit mb-2">
-                  Configure seu Estudo de Inteligência
-                </h2>
-                <p className="text-xs md:text-sm text-slate-400 mb-8">
-                  Estruture o escopo de coleta presencial ou telefônica com garantia de auditoria e registro TSE.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Step 1: Methodology */}
-                  <div>
-                    <label className="block text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-3">
-                      1. Modalidade de Coleta
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {[
-                        { id: 'phone', label: 'Telefônica (CATI)', desc: 'Ágil e custo-eficiente com gravação 100%' },
-                        { id: 'field', label: 'Presencial (CAPI)', desc: 'Face a face em pontos de fluxo e domiciliar' },
-                        { id: 'hybrid', label: 'Híbrida Multi-canal', desc: 'Combinação robusta com máxima abrangência' },
-                      ].map((m) => (
-                        <div
-                          key={m.id}
-                          onClick={() => setMethodology(m.id as any)}
-                          className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                            methodology === m.id
-                              ? 'bg-sky-500/20 border-cyan-400 shadow-lg shadow-cyan-500/15'
-                              : 'bg-white/5 border-white/10 hover:border-white/20'
-                          }`}
-                        >
-                          <div className="text-xs font-black text-white uppercase mb-1">{m.label}</div>
-                          <div className="text-[10px] text-slate-400 leading-tight">{m.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Step 2: Sample Size Slider */}
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="text-[11px] font-black text-cyan-300 uppercase tracking-wider">
-                        2. Tamanho Amostral: <span className="text-cyan-400 font-bold">{sampleSize.toLocaleString()} Entrevistas</span>
-                      </label>
-                      <span className="text-[10px] font-mono text-slate-400">Margem: {estimate.confidence}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={400}
-                      max={3000}
-                      step={50}
-                      value={sampleSize}
-                      onChange={(e) => setSampleSize(Number(e.target.value))}
-                      className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-cyan-400"
-                    />
-                    <div className="flex justify-between text-[9px] text-slate-500 font-mono mt-1">
-                      <span>400 (Municipal)</span>
-                      <span>1.200 (Estadual Padrão)</span>
-                      <span>2.000 (Alta Precisão)</span>
-                      <span>3.000 (Nacional)</span>
-                    </div>
-                  </div>
-
-                  {/* Step 3: Urgency */}
-                  <div>
-                    <label className="block text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-2">
-                      3. Prazo de Entrega do Relatório
-                    </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {[
-                        { id: 'standard', label: 'Padrão (7-10d)' },
-                        { id: 'fast', label: 'Rápido (4-5d)' },
-                        { id: 'express', label: 'Express (48h)' },
-                      ].map((u) => (
-                        <button
-                          key={u.id}
-                          type="button"
-                          onClick={() => setUrgency(u.id as any)}
-                          className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition-all ${
-                            urgency === u.id
-                              ? 'bg-cyan-500 text-slate-950 border-cyan-400 font-black'
-                              : 'bg-white/5 text-slate-300 border-white/10 hover:border-white/20'
-                          }`}
-                        >
-                          {u.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Summary Box */}
-                  <div className="p-4 rounded-2xl bg-sky-950/40 border border-sky-500/25 flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <ShieldCheck className="text-emerald-400" size={24} />
-                      <div>
-                        <div className="text-[11px] font-black text-white uppercase">Garantias Metodológicas Algoritma Dados</div>
-                        <div className="text-[10px] text-slate-400">100% gravado / Checagem por supervisão / Auditoria e TSE</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[10px] text-slate-400 block font-mono">Abrangência Estimada</span>
-                      <span className="text-xs font-black text-cyan-400">{estimate.coverage}</span>
-                    </div>
-                  </div>
-
-                  {/* Form fields */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
-                        Organização / Empresa / Mandato *
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        value={formData.organization}
-                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                        placeholder="Ex: Partido / Agência / Prefeitura"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
-                        Seu Nome Completo *
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Ex: Dra. Mariana Vasconcelos"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
-                        E-mail Corporativo *
-                      </label>
-                      <input
-                        required
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="contato@organizacao.com.br"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
-                        Telefone / WhatsApp *
-                      </label>
-                      <input
-                        required
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="(85) 99999-0000"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
-                      Objetivos & Detalhes do Estudo (Opcional)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={formData.notes}
-                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Descreva as cidades de interesse, hipóteses a testar ou cargos em disputa..."
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-[0.3em] transition-all shadow-xl shadow-cyan-500/25 active:scale-[0.99] flex items-center justify-center gap-3 font-outfit"
-                  >
-                    <Send size={16} />
-                    SOLICITAR PROPOSTA METODOLÓGICA & CRONOGRAMA
-                  </button>
-                </form>
+                <input
+                  id="quote-sample-range"
+                  type="range"
+                  min={400}
+                  max={3000}
+                  step={50}
+                  value={sampleSize}
+                  onChange={(e) => setSampleSize(Number(e.target.value))}
+                  className="w-full editorial-range"
+                />
+                <div className="flex justify-between text-[11px] font-mono text-slate-500 mt-2">
+                  <span>400 (Municipal)</span>
+                  <span>1.200 (Estadual)</span>
+                  <span>2.000 (Alta precisão)</span>
+                  <span>3.000 (Nacional)</span>
+                </div>
               </div>
-            )}
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+
+              {/* Step 3: Delivery Window */}
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-2.5">
+                  3. Prazo de entrega
+                </label>
+                <div className="grid grid-cols-3 gap-2.5">
+                  {[
+                    { id: 'standard', label: 'Padrão (7 a 10 dias)' },
+                    { id: 'fast', label: 'Rápido (4 a 5 dias)' },
+                    { id: 'express', label: 'Expresso (48h)' },
+                  ].map((u) => (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => setUrgency(u.id as 'standard' | 'fast' | 'express')}
+                      className={`py-2.5 px-3 rounded-md border text-xs font-medium transition-colors cursor-pointer ${
+                        urgency === u.id
+                          ? 'bg-cyan-500 text-slate-950 border-cyan-500 font-semibold'
+                          : 'bg-[#050b14] text-slate-300 border-slate-800 hover:border-slate-600'
+                      }`}
+                    >
+                      {u.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Technical Summary Strip */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 border border-slate-800 rounded-md divide-y sm:divide-y-0 sm:divide-x divide-slate-800 bg-[#050b14] text-xs">
+                <div className="p-3.5">
+                  <div className="text-slate-400">Abrangência estimada</div>
+                  <div className="text-slate-100 font-medium mt-0.5">{coverage}</div>
+                </div>
+                <div className="p-3.5">
+                  <div className="text-slate-400">Prazo previsto</div>
+                  <div className="text-cyan-400 font-mono font-medium mt-0.5">{leadTime}</div>
+                </div>
+                <div className="p-3.5">
+                  <div className="text-slate-400">Governança</div>
+                  <div className="text-emerald-400 font-medium mt-0.5">
+                    Auditoria 100% · TSE e LGPD
+                  </div>
+                </div>
+              </div>
+
+              {/* Organization & Contact Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="quote-org" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Organização / Instituição *
+                  </label>
+                  <input
+                    id="quote-org"
+                    required
+                    type="text"
+                    value={formData.organization}
+                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                    placeholder="Empresa, partido, mandato ou veículo"
+                    className="w-full bg-[#050b14] border border-slate-800 rounded-md px-3.5 py-2.5 min-h-[42px] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="quote-name" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Nome completo *
+                  </label>
+                  <input
+                    id="quote-name"
+                    required
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Responsável pela solicitação"
+                    className="w-full bg-[#050b14] border border-slate-800 rounded-md px-3.5 py-2.5 min-h-[42px] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="quote-email" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    E-mail corporativo *
+                  </label>
+                  <input
+                    id="quote-email"
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="nome@organizacao.com.br"
+                    className="w-full bg-[#050b14] border border-slate-800 rounded-md px-3.5 py-2.5 min-h-[42px] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="quote-region" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Estado ou região de cobertura *
+                  </label>
+                  <input
+                    id="quote-region"
+                    required
+                    type="text"
+                    value={formData.region}
+                    onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+                    placeholder="Ex: Ceará, Nordeste, Brasil"
+                    className="w-full bg-[#050b14] border border-slate-800 rounded-md px-3.5 py-2.5 min-h-[42px] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="quote-notes" className="block text-xs font-medium text-slate-300 mb-1.5">
+                  Objetivos e observações técnicas (opcional)
+                </label>
+                <textarea
+                  id="quote-notes"
+                  rows={2}
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Cidades prioritárias, necessidade de registro no TSE, blocos temáticos ou público-alvo..."
+                  className="w-full bg-[#050b14] border border-slate-800 rounded-md px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 resize-none"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                <span className="text-xs text-slate-400">
+                  Dúvidas diretas:{' '}
+                  <span className="font-mono text-slate-200">contato@algoritmadados.com.br</span>
+                </span>
+                <button
+                  type="submit"
+                  className="px-6 py-3 min-h-[44px] rounded-md bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition-colors inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+                >
+                  <Send size={15} />
+                  <span>Solicitar proposta técnica</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
