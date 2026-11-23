@@ -35,12 +35,12 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-4xl my-8 bg-[#120726] border border-violet-500/30 rounded-3xl overflow-hidden shadow-2xl z-10 max-h-[90vh] flex flex-col text-left"
+          className="relative w-full max-w-4xl my-8 bg-[#08101e] border border-cyan-500/30 rounded-3xl overflow-hidden shadow-2xl z-10 max-h-[90vh] flex flex-col text-left"
         >
           {/* Header Image with close button */}
           <div className="relative h-64 md:h-80 w-full shrink-0 overflow-hidden">
             <img src={article.img} alt={article.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#120726] via-[#120726]/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#08101e] via-[#08101e]/40 to-transparent" />
             
             <button
               onClick={onClose}
@@ -52,19 +52,19 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
             <div className="absolute bottom-6 left-6 right-6">
               <div className="flex items-center gap-3 mb-2">
                 {article.state && (
-                  <span className="px-3 py-1 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-widest font-mono">
+                  <span className="px-3 py-1 rounded-full bg-cyan-500 text-slate-950 text-[10px] font-black uppercase tracking-widest font-mono">
                     {article.state}
                   </span>
                 )}
-                <span className="px-3 py-1 rounded-full bg-violet-600/60 backdrop-blur-md border border-violet-400/30 text-violet-200 text-[10px] font-black uppercase tracking-widest font-mono">
+                <span className="px-3 py-1 rounded-full bg-sky-500/30 backdrop-blur-md border border-sky-400/30 text-sky-200 text-[10px] font-black uppercase tracking-widest font-mono">
                   {article.category}
                 </span>
                 <span className="flex items-center gap-1 text-[11px] text-slate-300 font-mono">
-                  <Calendar size={12} className="text-amber-400" />
+                  <Calendar size={12} className="text-cyan-400" />
                   {article.date}
                 </span>
                 <span className="flex items-center gap-1 text-[11px] text-slate-300 font-mono">
-                  <Clock size={12} className="text-violet-400" />
+                  <Clock size={12} className="text-sky-400" />
                   {article.readTime}
                 </span>
               </div>
@@ -76,7 +76,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
 
           {/* Content Body */}
           <div className="p-6 md:p-8 overflow-y-auto space-y-6">
-            <p className="text-base md:text-lg text-violet-200/90 font-medium leading-relaxed italic border-l-2 border-amber-500 pl-4">
+            <p className="text-base md:text-lg text-sky-200/90 font-medium leading-relaxed italic border-l-2 border-cyan-400 pl-4">
               "{article.subtitle}"
             </p>
 
@@ -87,7 +87,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
                   <div key={idx} className="text-center p-2">
                     <div className="text-xl md:text-2xl font-black text-white font-outfit">{s.value}</div>
                     <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{s.label}</div>
-                    {s.change && <div className="text-[9px] font-mono text-amber-400 mt-0.5">{s.change}</div>}
+                    {s.change && <div className="text-[9px] font-mono text-cyan-400 mt-0.5">{s.change}</div>}
                   </div>
                 ))}
               </div>
@@ -96,13 +96,13 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
             {/* Highlights */}
             {article.highlights && (
               <div className="space-y-2">
-                <h4 className="text-xs font-black text-amber-400 uppercase tracking-widest font-mono">
+                <h4 className="text-xs font-black text-cyan-400 uppercase tracking-widest font-mono">
                   Destaques Metodológicos & Achados
                 </h4>
                 <ul className="space-y-2">
                   {article.highlights.map((h, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-300">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
                       <span>{h}</span>
                     </li>
                   ))}
@@ -120,13 +120,13 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
             {/* Author / Source */}
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-violet-600/30 border border-violet-500/40 flex items-center justify-center text-amber-400">
+                <div className="w-9 h-9 rounded-full bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-cyan-400">
                   <User size={16} />
                 </div>
                 <div>
                   <div className="text-xs font-bold text-white">{article.author}</div>
                   {article.sourceName && (
-                    <div className="text-[10px] text-amber-400 font-mono font-bold">
+                    <div className="text-[10px] text-cyan-400 font-mono font-bold">
                       Fonte: {article.sourceName}
                     </div>
                   )}
@@ -139,7 +139,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
                     href={article.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-xl bg-violet-600/20 hover:bg-violet-600/40 text-violet-200 text-xs font-bold border border-violet-500/40 transition-all flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-xl bg-sky-500/15 hover:bg-sky-500/30 text-sky-200 text-xs font-bold border border-sky-500/40 transition-all flex items-center gap-1.5"
                   >
                     <span>Fonte: {article.sourceName || 'Ver Original'}</span>
                     <ExternalLink size={13} />
@@ -160,7 +160,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({ article, onClose, on
                       onClose();
                       onExploreReport();
                     }}
-                    className="flex-1 sm:flex-none px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all font-outfit"
+                    className="flex-1 sm:flex-none px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all font-outfit"
                   >
                     <span>Ver Relatório Completo</span>
                     <ArrowRight size={14} />

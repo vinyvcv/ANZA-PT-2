@@ -27,10 +27,10 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
   });
 
   return (
-    <section id="noticias" className="py-24 bg-[#120726] relative">
+    <section id="noticias" className="py-24 bg-[#08101e] relative">
       {/* Subtle background glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-violet-600/10 blur-[170px] rounded-full" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-sky-500/10 blur-[170px] rounded-full" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-left">
@@ -38,17 +38,17 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
-            <div className="flex items-center gap-2 text-amber-500 mb-2">
+            <div className="flex items-center gap-2 text-cyan-400 mb-2">
               <BookOpen size={18} />
               <span className="text-xs font-black uppercase tracking-[0.3em] font-mono">
                 CENTRAL DE CONTEÚDO OFICIAL
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-outfit">
-              Estudos ANZA & Justiça Eleitoral
+              Estudos Algoritma Dados & Justiça Eleitoral
             </h2>
             <p className="text-sm md:text-base text-slate-400 max-w-2xl mt-2">
-              Pesquisas próprias da ANZA e informações institucionais publicadas pela ANC, TSE e TRE.
+              Pesquisas próprias da Algoritma Dados e informações institucionais publicadas pela ANC, TSE e TRE.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar por tema ou serviço eleitoral..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-all font-medium"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all font-medium"
             />
           </div>
         </div>
@@ -73,7 +73,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
                 selectedCategory === cat
-                  ? 'bg-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/20'
+                  ? 'bg-cyan-500 text-slate-950 font-black shadow-lg shadow-cyan-500/20'
                   : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/5'
               }`}
             >
@@ -98,7 +98,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 onClick={() => onSelectArticle(article)}
-                className="group cursor-pointer p-5 sm:p-6 rounded-3xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-violet-500/40 transition-all duration-300 flex flex-col justify-between shadow-xl"
+                className="group cursor-pointer p-5 sm:p-6 rounded-3xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between shadow-xl"
               >
                 <div>
                   {/* Article Image */}
@@ -108,17 +108,17 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#120726] via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#08101e] via-transparent to-transparent opacity-80" />
                     
                     {/* Badge */}
                     <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 max-w-[85%]">
                       {article.state && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-wider font-mono shadow-sm">
+                        <span className="px-2.5 py-0.5 rounded-full bg-cyan-500 text-slate-950 text-[9px] font-black uppercase tracking-wider font-mono shadow-sm">
                           {article.state}
                         </span>
                       )}
                       {article.officeTag && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-violet-600/90 text-white text-[9px] font-black uppercase tracking-wider font-mono border border-violet-400/30">
+                        <span className="px-2.5 py-0.5 rounded-full bg-sky-600/90 text-white text-[9px] font-black uppercase tracking-wider font-mono border border-sky-400/30">
                           {article.officeTag}
                         </span>
                       )}
@@ -135,18 +135,18 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
                   {/* Metadata */}
                   <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-2">
                     <div className="flex items-center gap-1.5">
-                      <Calendar size={11} className="text-amber-500" />
+                      <Calendar size={11} className="text-cyan-400" />
                       <span>{article.date}</span>
                     </div>
                     {article.sourceName && (
-                      <span className="text-amber-400/90 font-bold">
+                      <span className="text-cyan-400/90 font-bold">
                         Fonte: {article.sourceName}
                       </span>
                     )}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-black text-white group-hover:text-amber-300 transition-colors uppercase tracking-tight font-outfit leading-snug mb-3">
+                  <h3 className="text-lg font-black text-white group-hover:text-cyan-300 transition-colors uppercase tracking-tight font-outfit leading-snug mb-3">
                     {article.title}
                   </h3>
 
@@ -161,7 +161,7 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ onSelectArticle }) => {
                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">
                     Ler Análise Completa
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-amber-500 group-hover:text-slate-950 flex items-center justify-center transition-all">
+                  <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-cyan-500 group-hover:text-slate-950 flex items-center justify-center transition-all">
                     <ArrowUpRight size={14} />
                   </div>
                 </div>

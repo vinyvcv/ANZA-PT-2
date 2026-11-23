@@ -11,7 +11,7 @@ import {
   Share2, Check, ArrowUpRight, Filter 
 } from 'lucide-react';
 import { reportData, SurveyRow } from '../data/reportData';
-import { AnzaLogo } from './AnzaLogo';
+import { AlgoritmaLogo } from './AlgoritmaLogo';
 
 const useWindowSize = () => {
   const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
@@ -37,7 +37,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, sub }) => (
     className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center min-w-[140px] md:min-w-[170px] flex-1 md:flex-none shadow-xl"
   >
     <div className="text-2xl md:text-4xl font-black text-white mb-1 font-outfit">{value}</div>
-    <div className="text-[9px] md:text-[10px] font-black text-amber-400 uppercase tracking-widest font-mono">{label}</div>
+    <div className="text-[9px] md:text-[10px] font-black text-cyan-400 uppercase tracking-widest font-mono">{label}</div>
     {sub && <div className="text-[8px] text-slate-400 mt-0.5">{sub}</div>}
   </motion.div>
 );
@@ -49,8 +49,8 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ icon: Icon, title, subtitle }) => (
-  <div className="flex flex-col mb-8 md:mb-12 border-l-4 border-amber-500 pl-4 md:pl-6 py-1">
-    <div className="flex items-center gap-2.5 text-amber-400 mb-1">
+  <div className="flex flex-col mb-8 md:mb-12 border-l-4 border-cyan-500 pl-4 md:pl-6 py-1">
+    <div className="flex items-center gap-2.5 text-cyan-400 mb-1">
       {Icon && <Icon size={18} className="md:w-[20px] md:h-[20px]" />}
       <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] font-mono">{title}</span>
     </div>
@@ -67,7 +67,7 @@ interface DataTableProps {
 const DataTable: React.FC<DataTableProps> = ({ columns, data, total }) => (
   <div className="w-full overflow-hidden rounded-2xl border border-white/10 mt-6 md:mt-8 shadow-2xl">
     <table className="w-full text-left text-[11px] md:text-[12px] font-bold uppercase tracking-tight">
-      <thead className="bg-[#180d33] text-amber-300 border-b border-white/10 uppercase font-mono text-[10px]">
+      <thead className="bg-[#0c172a] text-cyan-300 border-b border-white/10 uppercase font-mono text-[10px]">
         <tr>
           {columns.map((col, i) => (
             <th key={i} className={`px-4 md:px-6 py-3.5 ${i === 0 ? 'text-left' : 'text-center'}`}>
@@ -76,22 +76,22 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data, total }) => (
           ))}
         </tr>
       </thead>
-      <tbody className="bg-[#0e061e]/60 backdrop-blur-md divide-y divide-white/5">
+      <tbody className="bg-[#08101e]/70 backdrop-blur-md divide-y divide-white/5">
         {data.map((row, i) => (
           <tr key={i} className="hover:bg-white/[0.04] transition-colors">
             <td className="px-4 md:px-6 py-3 md:py-4 text-slate-200 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color || '#8b5cf6' }} />
+              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color || '#06b6d4' }} />
               <span>{row.name}</span>
             </td>
-            <td className="px-4 md:px-6 py-3 md:py-4 text-violet-300 font-mono text-center">{row.n ? row.n.toLocaleString() : '-'}</td>
+            <td className="px-4 md:px-6 py-3 md:py-4 text-sky-300 font-mono text-center">{row.n ? row.n.toLocaleString() : '-'}</td>
             <td className="px-4 md:px-6 py-3 md:py-4 text-white font-black font-outfit text-center text-sm">{row.value.toFixed(1)}%</td>
           </tr>
         ))}
         {total && (
-          <tr className="bg-amber-500/10 text-white font-black border-t border-amber-500/30">
-            <td className="px-4 md:px-6 py-3.5 text-amber-300">TOTAL GERAL</td>
-            <td className="px-4 md:px-6 py-3.5 text-amber-300 text-center font-mono">{total.n.toLocaleString()}</td>
-            <td className="px-4 md:px-6 py-3.5 text-amber-300 text-center font-outfit">{total.value.toFixed(1)}%</td>
+          <tr className="bg-cyan-500/10 text-white font-black border-t border-cyan-500/30">
+            <td className="px-4 md:px-6 py-3.5 text-cyan-300">TOTAL GERAL</td>
+            <td className="px-4 md:px-6 py-3.5 text-cyan-300 text-center font-mono">{total.n.toLocaleString()}</td>
+            <td className="px-4 md:px-6 py-3.5 text-cyan-300 text-center font-outfit">{total.value.toFixed(1)}%</td>
           </tr>
         )}
       </tbody>
@@ -116,9 +116,9 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ id, question, colorClass = "a
         {/* Identity Badge */}
         <div className="flex-shrink-0 flex items-center justify-center">
           <div className="relative px-5 py-6 rounded-2xl bg-gradient-to-b from-white/[0.08] to-transparent border border-white/10 flex flex-col items-center justify-center min-w-[90px] shadow-lg">
-             <span className="text-[10px] font-black text-amber-400 uppercase tracking-[0.2em] mb-1 font-mono">ENUNCIADO</span>
+             <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em] mb-1 font-mono">ENUNCIADO</span>
              <span className="text-xl font-black text-white tracking-tight font-outfit">{qId}</span>
-             <div className="mt-2 p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+             <div className="mt-2 p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400">
                 <MessageSquare size={14} />
              </div>
           </div>
@@ -127,14 +127,14 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ id, question, colorClass = "a
         {/* Question Text Content */}
         <div className="flex-grow space-y-3 pt-1 text-left">
           <div className="flex items-center gap-3">
-             <div className="h-[1px] w-6 bg-amber-500/50" />
-             <span className="text-[10px] font-black text-amber-400 uppercase tracking-[0.3em] font-mono">
+             <div className="h-[1px] w-6 bg-cyan-500/50" />
+             <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em] font-mono">
                 {label || "PERGUNTA APLICADA AO ELEITOR"}
              </span>
           </div>
           
           <div className="relative">
-            <Quote size={36} className="absolute -left-3 -top-5 opacity-10 text-amber-400 pointer-events-none transform -scale-x-100" />
+            <Quote size={36} className="absolute -left-3 -top-5 opacity-10 text-cyan-400 pointer-events-none transform -scale-x-100" />
             <h3 className="text-lg md:text-xl font-bold text-white leading-relaxed tracking-tight max-w-4xl relative z-10 italic">
                {question.replace(/^"|"$/g, '')}
             </h3>
@@ -176,7 +176,7 @@ const DataSection: React.FC<DataSectionProps> = ({
         <QuestionBox id={questionId} question={questionText} colorClass={questionColor} />
         
         <div className="p-4 md:p-8 bg-white/[0.01] border border-white/10 rounded-3xl min-h-[380px]">
-          <h4 className="text-center text-[10px] font-black text-amber-400 uppercase tracking-widest mb-6 font-mono">
+          <h4 className="text-center text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-6 font-mono">
             {chartTitle}
           </h4>
           
@@ -259,7 +259,7 @@ const EvaluationBlock: React.FC<EvaluationBlockProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {[approvalData, qualitativeData].map((chart, idx) => (
             <div key={idx} className="p-4 md:p-6 bg-white/[0.01] border border-white/10 rounded-3xl min-h-[320px]">
-              <h4 className="text-center text-[10px] font-black text-amber-400 uppercase tracking-widest mb-6 font-mono">
+              <h4 className="text-center text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-6 font-mono">
                 {chart.title}
               </h4>
               
@@ -350,11 +350,11 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d051c] text-[#fafafa] selection:bg-amber-500/30 font-sans pb-40 overflow-x-hidden scroll-smooth text-left">
+    <div className="min-h-screen bg-[#050b14] text-[#fafafa] selection:bg-cyan-500/30 font-sans pb-40 overflow-x-hidden scroll-smooth text-left">
       
       {/* Background Decor */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-         <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-violet-600/5 blur-[180px] rounded-full" />
+         <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-sky-500/5 blur-[180px] rounded-full" />
          <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
       </div>
 
@@ -364,7 +364,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
            initial={{ opacity: 0, scale: 0.8 }}
            animate={{ opacity: 1, scale: 1 }}
            onClick={onBack}
-           className="p-4 px-5 rounded-2xl bg-amber-500 text-slate-950 font-black pointer-events-auto transition-all shadow-2xl hover:bg-amber-400 hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group font-outfit"
+           className="p-4 px-5 rounded-2xl bg-cyan-500 text-slate-950 font-black pointer-events-auto transition-all shadow-2xl hover:bg-cyan-400 hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group font-outfit"
            title="Retornar ao Hub"
          >
            <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
@@ -376,7 +376,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               onClick={() => {
                 window.scrollBy({ top: -window.innerHeight * 0.75, behavior: 'smooth' });
               }}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-violet-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-cyan-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
               title="Seção Anterior"
             >
               <ChevronLeft size={20} />
@@ -385,7 +385,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               onClick={() => {
                 window.scrollBy({ top: window.innerHeight * 0.75, behavior: 'smooth' });
               }}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-violet-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
+              className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-cyan-600 pointer-events-auto transition-all shadow-2xl backdrop-blur-3xl"
               title="Próxima Seção"
             >
               <ChevronRight size={20} />
@@ -394,10 +394,10 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       </div>
 
       {/* Top Bar Navigation */}
-      <header className="sticky top-0 z-40 bg-[#0d051c]/95 border-b border-white/10 backdrop-blur-xl py-4 px-4 sm:px-8">
+      <header className="sticky top-0 z-40 bg-[#050b14]/95 border-b border-white/10 backdrop-blur-xl py-4 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 cursor-pointer" onClick={onBack}>
-            <AnzaLogo size="sm" withTagline={true} />
+            <AlgoritmaLogo size="sm" withTagline={true} />
           </div>
 
           <div className="flex items-center gap-3">
@@ -411,7 +411,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             <button
               onClick={() => window.print()}
-              className="px-4 py-2 rounded-xl bg-violet-600/30 hover:bg-violet-600/40 border border-violet-500/40 text-xs font-bold text-violet-200 flex items-center gap-1.5 transition-all"
+              className="px-4 py-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 text-xs font-bold text-sky-200 flex items-center gap-1.5 transition-all"
             >
               <Download size={14} />
               <span className="hidden sm:inline">Imprimir / PDF</span>
@@ -419,7 +419,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             <button
               onClick={onBack}
-              className="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider hover:bg-amber-400 transition-all font-outfit"
+              className="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs uppercase tracking-wider hover:bg-cyan-400 transition-all font-outfit"
             >
               Fechar Relatório
             </button>
@@ -432,18 +432,18 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="max-w-7xl mx-auto w-full px-2 md:px-6 flex flex-col items-center text-center">
           
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-[2px] bg-amber-500" />
-            <span className="text-[10px] md:text-xs font-bold text-amber-400 uppercase tracking-[0.25em] font-mono">
+            <div className="w-8 h-[2px] bg-cyan-400" />
+            <span className="text-[10px] md:text-xs font-bold text-cyan-400 uppercase tracking-[0.25em] font-mono">
               {reportData.header.badge}
             </span>
-            <div className="w-8 h-[2px] bg-amber-500" />
+            <div className="w-8 h-[2px] bg-cyan-400" />
           </div>
 
           <h1 className="text-3xl md:text-6xl font-black text-white mb-2 tracking-tight leading-tight uppercase font-outfit">
             {reportData.header.title}
           </h1>
 
-          <h2 className="text-2xl md:text-5xl font-black text-violet-400 mb-6 tracking-tight leading-tight uppercase font-outfit">
+          <h2 className="text-2xl md:text-5xl font-black text-sky-400 mb-6 tracking-tight leading-tight uppercase font-outfit">
             {reportData.header.subtitle}
           </h2>
 
@@ -470,10 +470,10 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               <div 
                 key={item.id} 
                 onClick={() => scrollToSection(item.anchor)} 
-                className="flex items-center justify-between p-4 md:p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-violet-600/10 hover:border-amber-500/30 transition-all group cursor-pointer shadow-lg"
+                className="flex items-center justify-between p-4 md:p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-cyan-500/10 hover:border-cyan-500/30 transition-all group cursor-pointer shadow-lg"
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-violet-950/80 border border-violet-500/30 flex items-center justify-center text-[10px] md:text-[11px] font-black text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all font-mono">
+                  <span className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-slate-900/80 border border-cyan-500/30 flex items-center justify-center text-[10px] md:text-[11px] font-black text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all font-mono">
                     {item.id}
                   </span>
                   <span className="text-[11px] md:text-[12px] font-bold text-slate-300 group-hover:text-white flex flex-col">
@@ -481,7 +481,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <span className="text-[8px] opacity-50 uppercase font-bold font-mono mt-0.5">Seção {item.id}</span>
                   </span>
                 </div>
-                <span className="text-[9px] font-black text-slate-500 group-hover:text-amber-400 font-mono">PÁG.{item.page}</span>
+                <span className="text-[9px] font-black text-slate-500 group-hover:text-cyan-400 font-mono">PÁG.{item.page}</span>
               </div>
             ))}
           </div>
@@ -496,7 +496,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="p-6 md:p-8 bg-white/[0.01] border border-white/10 rounded-3xl">
               <h4 className="text-white text-sm md:text-base font-black uppercase tracking-tight mb-6 flex items-center gap-2 font-outfit">
-                <Settings size={16} className="text-amber-500"/> 
+                <Settings size={16} className="text-cyan-400"/> 
                 Parâmetros Técnicos Registrados
               </h4>
               <div className="space-y-3">
@@ -519,7 +519,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {reportData.methodology.stratification.quotas.map(q => (
-                    <span key={q} className="px-3 py-1.5 rounded-xl bg-violet-600/10 border border-violet-500/20 text-[9px] md:text-[10px] font-black text-violet-300 uppercase font-mono">
+                    <span key={q} className="px-3 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-[9px] md:text-[10px] font-black text-sky-300 uppercase font-mono">
                       {q}
                     </span>
                   ))}
@@ -527,7 +527,7 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/10 text-xs text-slate-400">
-                Responsável Técnico: Equipe de Estatística ANZA Pesquisa · Registro CONRE
+                Responsável Técnico: Equipe de Estatística Algoritma Dados · Registro CONRE
               </div>
             </div>
           </div>
@@ -551,16 +551,16 @@ export const ReportView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       <EvaluationBlock id="eval-state" icon={Award} title="AVALIAÇÃO ESTADUAL" subtitle="Gov. Elmano de Freitas" questionId="Q15 / Q16 · AVALIAÇÃO" questionText={reportData.evaluations.state.question} questionColor="sky" approvalData={reportData.evaluations.state.approval} qualitativeData={reportData.evaluations.state.qualitative} />
 
       {/* FINAL FOOTER */}
-      <footer className="py-16 bg-[#080214] text-center border-t border-white/5 px-6 backdrop-blur-3xl">
+      <footer className="py-16 bg-[#03070e] text-center border-t border-white/5 px-6 backdrop-blur-3xl">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="flex flex-col items-center gap-3">
-             <AnzaLogo size="md" withTagline={true} />
-             <div className="text-[10px] font-black text-amber-400 uppercase tracking-[0.4em] font-mono">
+             <AlgoritmaLogo size="md" withTagline={true} />
+             <div className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.4em] font-mono">
                Pesquisa e Inteligência de Dados
              </div>
           </div>
           
-          <div className="h-0.5 w-24 bg-amber-500/30 mx-auto" />
+          <div className="h-0.5 w-24 bg-cyan-500/30 mx-auto" />
           
           <p className="text-xs text-slate-400 leading-relaxed max-w-2xl mx-auto italic">
             {reportData.index.disclaimer}

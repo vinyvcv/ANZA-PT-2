@@ -32,42 +32,42 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
 
   const featuredItems = [
     {
-      title: 'PESQUISA EXCLUSIVA CEARÁ 2026: GOVERNADOR, SENADOR E AVALIAÇÕES',
-      subtitle: 'Levantamento quantitativo com 1.225 entrevistas em 34 municípios detalha cenários espontâneos, estimulados e segundo turno.',
+      title: 'BALANÇO ELEIÇÕES 2026: CEARÁ, NORDESTE E RESULTADOS OFICIAIS DO TSE',
+      subtitle: 'Confira os números consolidados de 1º e 2º turnos para Presidente, Governador, Senado e bancadas Federal e Estadual (Alece).',
       img: '/urna_eletronica_brasil.jpg',
-      badge: 'PESQUISA PRÓPRIA ANZA',
-      reg: 'REG. TSE CE-07550/2026',
-      highlights: ['Ciro Gomes lidera estimulada com 44.0%', 'Elmano de Freitas com 35.9%', 'Aprovação do Gov. Elmano em 56.4%'],
+      badge: 'CENÁRIOS REAIS 2026',
+      reg: 'TSE · ALGORITMA DADOS',
+      highlights: ['Lula 68,93% no CE (2º turno)', 'Elmano reeleito no 1º turno (53,19%)', 'Bancadas de 22 Federais e 46 Estaduais'],
       action: onExplore,
     },
     {
-      title: 'ELEIÇÕES 2026: CONFIRA AS PRINCIPAIS DATAS DO CALENDÁRIO ELEITORAL',
-      subtitle: 'Informações oficiais do TSE sobre prazos, primeiro turno e eventual segundo turno das Eleições Gerais de 2026.',
-      img: '/urna_eletronica_brasil.jpg',
-      badge: 'SERVIÇO ELEITORAL',
+      title: 'TSE ENCERRA PRESTAÇÃO DE CONTAS E INICIA CONTAGEM PARA DIPLOMAÇÃO',
+      subtitle: 'Envio do 2º turno via CONTA+JE encerrou em 16 de novembro; cerimônias de diplomação ocorrem até 18 de dezembro de 2026.',
+      img: '/congresso_brasilia.jpg',
+      badge: 'JUSTIÇA ELEITORAL · NOV 2026',
       reg: 'FONTE OFICIAL · TSE',
-      highlights: ['1º turno em 4 de outubro', 'Eventual 2º turno em 25 de outubro', 'Resolução TSE nº 23.760/2026'],
-      action: () => onSelectArticle(newsArticles[1]),
+      highlights: ['Contas 2º turno até 16/11/2026', 'Diplomação limite em 18/12/2026', 'Posse Presidencial em 05/01/2027'],
+      action: () => onSelectArticle(newsArticles[0]),
     },
     {
-      title: 'TSE ORIENTA A DIVULGAÇÃO DOS RESULTADOS DAS ELEIÇÕES 2026',
-      subtitle: 'Documentação oficial apresenta os procedimentos técnicos para instituições que receberão e divulgarão os resultados.',
-      img: '/congresso_brasilia.jpg',
-      badge: 'INFORMAÇÃO OFICIAL',
-      reg: 'JUSTIÇA ELEITORAL · TSE',
-      highlights: ['Resultados fornecidos pelo TSE', 'Documentação técnica oficial', 'Duas vagas ao Senado em 2026'],
-      action: () => onSelectArticle(newsArticles[2]),
+      title: 'TRE-CE HOMOLOGA POR UNANIMIDADE TOTALIZAÇÃO DO 2º TURNO NO CEARÁ',
+      subtitle: 'Sessão plenária de 5 de novembro concluiu o exame sem pendências e liberou os trâmites oficiais para a diplomação dos eleitos.',
+      img: '/plenario_camara_brasil.jpg',
+      badge: 'CEARÁ · TRE-CE',
+      reg: 'ATUALIZADO · NOV 2026',
+      highlights: ['Aprovação unânime em 05/11/2026', 'Sem reclamações partidárias pendentes', 'Encaminhamento oficial ao TSE'],
+      action: () => onSelectArticle(newsArticles[1]),
     },
   ];
 
   const currentHero = featuredItems[activeFeatured];
 
   return (
-    <section id="inicio" className="relative pt-24 sm:pt-28 lg:pt-32 pb-16 overflow-hidden bg-[#120726]">
+    <section id="inicio" className="relative pt-24 sm:pt-28 lg:pt-32 pb-16 overflow-hidden bg-[#050b14]">
       {/* Dynamic Background Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-10 right-10 w-[550px] h-[550px] bg-violet-600/15 blur-[160px] rounded-full" />
-        <div className="absolute bottom-10 left-10 w-[450px] h-[450px] bg-amber-500/10 blur-[150px] rounded-full" />
+        <div className="absolute top-10 right-10 w-[550px] h-[550px] bg-sky-500/15 blur-[160px] rounded-full" />
+        <div className="absolute bottom-10 left-10 w-[450px] h-[450px] bg-cyan-500/10 blur-[150px] rounded-full" />
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
       </div>
 
@@ -98,13 +98,13 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                 />
                 
                 {/* Layered Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0d051c] via-[#0d051c]/70 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0d051c]/90 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050b14] via-[#050b14]/75 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#050b14]/90 via-transparent to-transparent" />
 
                 {/* Content Overlay */}
                 <div className="relative z-10 space-y-4">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider font-mono shadow-md">
+                    <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400 text-slate-950 text-[10px] font-black uppercase tracking-wider font-mono shadow-md">
                       {currentHero.badge}
                     </span>
                     <span className="px-3 py-1 rounded-full bg-white/10 text-slate-300 text-[10px] font-bold font-mono">
@@ -112,7 +112,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                     </span>
                   </div>
 
-                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white uppercase tracking-tight font-outfit leading-[1.08] drop-shadow-md group-hover:text-amber-200 transition-colors">
+                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white uppercase tracking-tight font-outfit leading-[1.08] drop-shadow-md group-hover:text-cyan-200 transition-colors">
                     {currentHero.title}
                   </h1>
 
@@ -127,7 +127,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                         key={i}
                         className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] sm:text-xs text-slate-300 font-medium flex items-center gap-1.5"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
                         <span>{h}</span>
                       </span>
                     ))}
@@ -140,7 +140,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                         e.stopPropagation();
                         currentHero.action();
                       }}
-                      className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-amber-500/25 active:scale-95 flex items-center gap-2 font-outfit"
+                      className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-cyan-500/25 active:scale-95 flex items-center gap-2 font-outfit"
                     >
                       <BarChart3 size={16} />
                       <span>Ver Resultados Interativos</span>
@@ -169,7 +169,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                         setActiveFeatured(idx);
                       }}
                       className={`h-2.5 rounded-full transition-all ${
-                        activeFeatured === idx ? 'w-8 bg-amber-500' : 'w-2.5 bg-white/30 hover:bg-white/60'
+                        activeFeatured === idx ? 'w-8 bg-cyan-400' : 'w-2.5 bg-white/30 hover:bg-white/60'
                       }`}
                     />
                   ))}
@@ -178,7 +178,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                       e.stopPropagation();
                       setActiveFeatured((prev) => (prev === 0 ? featuredItems.length - 1 : prev - 1));
                     }}
-                    className="p-2 rounded-full bg-black/50 hover:bg-amber-500 hover:text-slate-950 text-white border border-white/10 transition-colors ml-2"
+                    className="p-2 rounded-full bg-black/50 hover:bg-cyan-500 hover:text-slate-950 text-white border border-white/10 transition-colors ml-2"
                   >
                     <ChevronLeft size={16} />
                   </button>
@@ -187,7 +187,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                       e.stopPropagation();
                       setActiveFeatured((prev) => (prev === featuredItems.length - 1 ? 0 : prev + 1));
                     }}
-                    className="p-2 rounded-full bg-black/50 hover:bg-amber-500 hover:text-slate-950 text-white border border-white/10 transition-colors"
+                    className="p-2 rounded-full bg-black/50 hover:bg-cyan-500 hover:text-slate-950 text-white border border-white/10 transition-colors"
                   >
                     <ChevronRight size={16} />
                   </button>
@@ -203,24 +203,24 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* Top ambient glow */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 blur-[90px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-violet-600/10 blur-[90px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 blur-[90px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-sky-500/10 blur-[90px] rounded-full pointer-events-none" />
 
             {/* Feed Header */}
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 relative z-10">
               <div className="flex items-center gap-2.5">
                 <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
                 </span>
                 <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white font-mono flex items-center gap-2">
-                  <Activity size={15} className="text-amber-400" />
+                  <Activity size={15} className="text-cyan-400" />
                   <span>Radar de Inteligência</span>
                 </h3>
               </div>
 
               <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-                <span className="text-amber-400 font-bold">{sideIndex + 1}-{Math.min(sideIndex + 3, newsArticles.length)}</span>
+                <span className="text-cyan-400 font-bold">{sideIndex + 1}-{Math.min(sideIndex + 3, newsArticles.length)}</span>
                 <span className="text-slate-600">/</span>
                 <span>{newsArticles.length}</span>
               </div>
@@ -238,7 +238,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.35 }}
                     onClick={() => onSelectArticle(article)}
-                    className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-amber-500/40 transition-all duration-300 cursor-pointer group relative overflow-hidden shadow-lg"
+                    className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-cyan-500/40 transition-all duration-300 cursor-pointer group relative overflow-hidden shadow-lg"
                   >
                     <div className="flex gap-3.5">
                       <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden border border-white/10 relative">
@@ -248,7 +248,7 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                        <span className="absolute bottom-1 right-1 text-[8px] font-mono bg-black/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-amber-300 border border-white/10">
+                        <span className="absolute bottom-1 right-1 text-[8px] font-mono bg-black/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-cyan-300 border border-white/10">
                           {article.readTime}
                         </span>
                       </div>
@@ -258,33 +258,33 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
                           <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
                             <div className="flex items-center gap-1.5">
                               {article.state && (
-                                <span className="px-2 py-0.5 rounded bg-amber-500 text-slate-950 text-[8px] font-black uppercase tracking-wider font-mono">
+                                <span className="px-2 py-0.5 rounded bg-cyan-500 text-slate-950 text-[8px] font-black uppercase tracking-wider font-mono">
                                   {article.state}
                                 </span>
                               )}
-                              <span className="text-[9px] font-bold uppercase tracking-wider text-violet-300 font-mono">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-sky-300 font-mono">
                                 {article.category}
                               </span>
                             </div>
                             <span className="text-[8px] text-slate-400 font-mono">{article.date.split(' ')[0]} {article.date.split(' ')[1]}</span>
                           </div>
 
-                          <h4 className="text-xs font-bold text-slate-100 group-hover:text-amber-300 transition-colors line-clamp-2 leading-snug">
+                          <h4 className="text-xs font-bold text-slate-100 group-hover:text-cyan-300 transition-colors line-clamp-2 leading-snug">
                             {article.title}
                           </h4>
                         </div>
 
                         <div className="flex items-center justify-between gap-2 text-[9px] font-mono mt-2 pt-1 border-t border-white/5">
                           {article.sourceName ? (
-                            <span className="text-amber-400/90 font-semibold truncate max-w-[120px]">
+                            <span className="text-cyan-400/90 font-semibold truncate max-w-[120px]">
                               {article.sourceName}
                             </span>
                           ) : (
-                            <span className="text-slate-400">ANZA Data</span>
+                            <span className="text-slate-400">Algoritma Dados</span>
                           )}
-                          <span className="flex items-center gap-1 text-slate-300 group-hover:text-amber-400 transition-colors shrink-0">
+                          <span className="flex items-center gap-1 text-slate-300 group-hover:text-cyan-400 transition-colors shrink-0">
                             <span>Ler análise</span>
-                            <ArrowUpRight size={11} className="text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                            <ArrowUpRight size={11} className="text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                           </span>
                         </div>
                       </div>
@@ -298,13 +298,13 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
             <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between relative z-10">
               <button
                 onClick={() => setSideIndex((prev) => (prev === 0 ? newsArticles.length - 3 : prev - 1))}
-                className="h-8 px-4 rounded-xl bg-white/5 hover:bg-amber-500 hover:text-slate-950 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-white/10 hover:border-amber-400 transition-all active:scale-95 shadow-sm"
+                className="h-8 px-4 rounded-xl bg-white/5 hover:bg-cyan-500 hover:text-slate-950 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-white/10 hover:border-cyan-400 transition-all active:scale-95 shadow-sm"
               >
                 <ChevronLeft size={13} /> <span>Anterior</span>
               </button>
               <button
                 onClick={() => setSideIndex((prev) => (prev >= newsArticles.length - 3 ? 0 : prev + 1))}
-                className="h-8 px-4 rounded-xl bg-white/5 hover:bg-amber-500 hover:text-slate-950 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-white/10 hover:border-amber-400 transition-all active:scale-95 shadow-sm"
+                className="h-8 px-4 rounded-xl bg-white/5 hover:bg-cyan-500 hover:text-slate-950 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-white/10 hover:border-cyan-400 transition-all active:scale-95 shadow-sm"
               >
                 <span>Próximas</span> <ChevronRight size={13} />
               </button>
@@ -322,12 +322,12 @@ export const PortalHero: React.FC<PortalHeroProps> = ({
           ].map((stat, i) => (
             <div
               key={i}
-              className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm text-center hover:border-violet-500/30 transition-all"
+              className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm text-center hover:border-cyan-500/30 transition-all"
             >
               <div className="text-2xl sm:text-3xl font-black text-white font-outfit mb-1">
                 {stat.value}
               </div>
-              <div className="text-[10px] sm:text-[11px] font-black text-amber-400 uppercase tracking-wider font-mono">
+              <div className="text-[10px] sm:text-[11px] font-black text-cyan-400 uppercase tracking-wider font-mono">
                 {stat.label}
               </div>
               <div className="text-[9px] text-slate-400 mt-1">{stat.sub}</div>

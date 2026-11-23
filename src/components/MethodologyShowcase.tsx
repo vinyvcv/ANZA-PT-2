@@ -42,13 +42,13 @@ export const MethodologyShowcase: React.FC = () => {
   ];
 
   return (
-    <section id="metodologia" className="py-24 bg-[#0a0316] relative border-t border-white/5">
+    <section id="metodologia" className="py-24 bg-[#050b14] relative border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-left">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <div className="flex items-center gap-2 text-amber-400 mb-2">
+            <div className="flex items-center gap-2 text-cyan-400 mb-2">
               <ShieldCheck size={16} />
               <span className="text-[11px] font-black uppercase tracking-[0.25em] font-mono">
                 PROTOCOLO DE RIGOR CIENTÍFICO
@@ -58,13 +58,13 @@ export const MethodologyShowcase: React.FC = () => {
               Confiabilidade Metodológica
             </h2>
             <p className="text-sm md:text-base text-slate-400 max-w-2xl mt-2 leading-relaxed">
-              Cada ponto percentual divulgado pelo Instituto ANZA é respaldado por controle de qualidade em tempo real, amostragem probabilística e conformidade legal estrita.
+              Cada ponto percentual divulgado pela Algoritma Dados é respaldado por controle de qualidade em tempo real, amostragem probabilística e conformidade legal estrita.
             </p>
           </div>
 
           <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 shrink-0">
             <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Registro no Tribunal Superior Eleitoral</div>
-            <div className="text-xl font-bold text-amber-400 font-mono mt-0.5 tracking-wider">CE-07550/2026</div>
+            <div className="text-xl font-bold text-cyan-400 font-mono mt-0.5 tracking-wider">CE-07550/2026</div>
           </div>
         </div>
 
@@ -75,11 +75,11 @@ export const MethodologyShowcase: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="p-7 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-amber-500/40 transition-all space-y-5 flex flex-col justify-between"
+                className="p-7 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 transition-all space-y-5 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-white/5">
-                    <span className="font-mono text-xs font-bold text-amber-400/90 tracking-wider">
+                    <span className="font-mono text-xs font-bold text-cyan-400/90 tracking-wider">
                       [{p.code}]
                     </span>
                     <span className="text-[9px] font-mono font-bold tracking-widest text-slate-400 uppercase">
@@ -89,7 +89,7 @@ export const MethodologyShowcase: React.FC = () => {
 
                   <div className="mt-5 space-y-2">
                     <div className="flex items-center gap-2 text-slate-300">
-                      <Icon size={16} className="text-amber-400 shrink-0" />
+                      <Icon size={16} className="text-cyan-400 shrink-0" />
                       <span className="text-[10px] font-mono font-semibold text-slate-400 uppercase tracking-wide">
                         {p.spec}
                       </span>
@@ -106,7 +106,7 @@ export const MethodologyShowcase: React.FC = () => {
                 </div>
 
                 <div className="pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                  <span>PADRÃO ANZA QA</span>
+                  <span>PADRÃO ALGORITMA QA</span>
                   <span className="text-emerald-400 font-semibold">100% VERIFICADO</span>
                 </div>
               </div>
@@ -119,7 +119,7 @@ export const MethodologyShowcase: React.FC = () => {
           {/* Box 1: Technical Parameters */}
           <div className="p-6 md:p-8 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
             <div className="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider font-mono">
-              <Cpu size={15} className="text-amber-400" />
+              <Cpu size={15} className="text-cyan-400" />
               <span>Parâmetros Técnicos do Estudo Ceará 2026</span>
             </div>
             
@@ -137,7 +137,7 @@ export const MethodologyShowcase: React.FC = () => {
           <div className="p-6 md:p-8 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col justify-between space-y-6">
             <div>
               <div className="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider font-mono mb-3">
-                <Award size={15} className="text-amber-400" />
+                <Award size={15} className="text-cyan-400" />
                 <span>Estratificação da Amostra Probabilística</span>
               </div>
               
@@ -151,7 +151,7 @@ export const MethodologyShowcase: React.FC = () => {
                     key={i}
                     className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-200 font-medium flex items-center gap-2"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
                     {q}
                   </span>
                 ))}
@@ -159,7 +159,7 @@ export const MethodologyShowcase: React.FC = () => {
             </div>
 
             <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 text-xs text-slate-300 leading-relaxed font-mono">
-              <strong className="text-amber-400 font-bold">NOTA LEGAL:</strong> Pesquisa realizada em estrita conformidade com a Resolução-TSE nº 23.600/2019 e Lei Geral de Proteção de Dados (Lei 13.709/2018).
+              <strong className="text-cyan-400 font-bold">NOTA LEGAL:</strong> Pesquisa realizada em estrita conformidade com a Resolução-TSE nº 23.600/2019 e Lei Geral de Proteção de Dados (Lei 13.709/2018).
             </div>
           </div>
         </div>

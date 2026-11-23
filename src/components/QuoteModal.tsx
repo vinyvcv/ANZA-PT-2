@@ -42,7 +42,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ['#f59e0b', '#8b5cf6', '#10b981', '#ffffff'],
+      colors: ['#06b6d4', '#38bdf8', '#10b981', '#ffffff'],
     });
   };
 
@@ -64,7 +64,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-3xl my-8 bg-[#130926] border border-violet-500/30 rounded-3xl p-6 md:p-10 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-3xl my-8 bg-[#08101e] border border-cyan-500/30 rounded-3xl p-6 md:p-10 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
           >
             {/* Close button */}
             <button
@@ -83,7 +83,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                   Briefing Recebido com Sucesso!
                 </h3>
                 <p className="text-slate-300 max-w-md mx-auto text-sm leading-relaxed">
-                  Nossa diretoria técnica entrará em contato em até <strong className="text-amber-400">2 horas comerciais</strong> com a proposta metodológica e cronograma de campo detalhado.
+                  Nossa diretoria técnica entrará em contato em até <strong className="text-cyan-400">2 horas comerciais</strong> com a proposta metodológica e cronograma de campo detalhado.
                 </p>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left text-xs space-y-2 text-slate-300">
                   <div className="flex justify-between">
@@ -96,19 +96,19 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Prazo Estimado:</span>
-                    <strong className="text-amber-400">{estimate.days}</strong>
+                    <strong className="text-cyan-400">{estimate.days}</strong>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="px-8 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-widest transition-all"
+                  className="px-8 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-widest transition-all"
                 >
                   Concluir
                 </button>
               </div>
             ) : (
               <div>
-                <div className="flex items-center gap-3 text-amber-500 mb-2">
+                <div className="flex items-center gap-3 text-cyan-400 mb-2">
                   <Calculator size={20} />
                   <span className="text-xs font-black uppercase tracking-[0.3em] font-mono">
                     SIMULADOR & ORÇAMENTO DE CAMPO
@@ -124,7 +124,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Step 1: Methodology */}
                   <div>
-                    <label className="block text-[11px] font-black text-violet-300 uppercase tracking-wider mb-3">
+                    <label className="block text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-3">
                       1. Modalidade de Coleta
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -138,7 +138,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                           onClick={() => setMethodology(m.id as any)}
                           className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                             methodology === m.id
-                              ? 'bg-violet-600/30 border-amber-500 shadow-lg shadow-violet-600/20'
+                              ? 'bg-sky-500/20 border-cyan-400 shadow-lg shadow-cyan-500/15'
                               : 'bg-white/5 border-white/10 hover:border-white/20'
                           }`}
                         >
@@ -152,8 +152,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                   {/* Step 2: Sample Size Slider */}
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <label className="text-[11px] font-black text-violet-300 uppercase tracking-wider">
-                        2. Tamanho Amostral: <span className="text-amber-400 font-bold">{sampleSize.toLocaleString()} Entrevistas</span>
+                      <label className="text-[11px] font-black text-cyan-300 uppercase tracking-wider">
+                        2. Tamanho Amostral: <span className="text-cyan-400 font-bold">{sampleSize.toLocaleString()} Entrevistas</span>
                       </label>
                       <span className="text-[10px] font-mono text-slate-400">Margem: {estimate.confidence}</span>
                     </div>
@@ -164,7 +164,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                       step={50}
                       value={sampleSize}
                       onChange={(e) => setSampleSize(Number(e.target.value))}
-                      className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                      className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-cyan-400"
                     />
                     <div className="flex justify-between text-[9px] text-slate-500 font-mono mt-1">
                       <span>400 (Municipal)</span>
@@ -176,7 +176,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
 
                   {/* Step 3: Urgency */}
                   <div>
-                    <label className="block text-[11px] font-black text-violet-300 uppercase tracking-wider mb-2">
+                    <label className="block text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-2">
                       3. Prazo de Entrega do Relatório
                     </label>
                     <div className="grid grid-cols-3 gap-3">
@@ -191,7 +191,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                           onClick={() => setUrgency(u.id as any)}
                           className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition-all ${
                             urgency === u.id
-                              ? 'bg-amber-500 text-slate-950 border-amber-400 font-black'
+                              ? 'bg-cyan-500 text-slate-950 border-cyan-400 font-black'
                               : 'bg-white/5 text-slate-300 border-white/10 hover:border-white/20'
                           }`}
                         >
@@ -202,17 +202,17 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Summary Box */}
-                  <div className="p-4 rounded-2xl bg-violet-950/40 border border-violet-500/20 flex flex-wrap items-center justify-between gap-4">
+                  <div className="p-4 rounded-2xl bg-sky-950/40 border border-sky-500/25 flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <ShieldCheck className="text-emerald-400" size={24} />
                       <div>
-                        <div className="text-[11px] font-black text-white uppercase">Garantias Metodológicas ANZA</div>
+                        <div className="text-[11px] font-black text-white uppercase">Garantias Metodológicas Algoritma Dados</div>
                         <div className="text-[10px] text-slate-400">100% gravado / Checagem por supervisão / Auditoria e TSE</div>
                       </div>
                     </div>
                     <div className="text-right">
                       <span className="text-[10px] text-slate-400 block font-mono">Abrangência Estimada</span>
-                      <span className="text-xs font-black text-amber-400">{estimate.coverage}</span>
+                      <span className="text-xs font-black text-cyan-400">{estimate.coverage}</span>
                     </div>
                   </div>
 
@@ -228,7 +228,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                         value={formData.organization}
                         onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
                         placeholder="Ex: Partido / Agência / Prefeitura"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                       />
                     </div>
                     <div>
@@ -241,7 +241,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Ex: Dra. Mariana Vasconcelos"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                       />
                     </div>
                     <div>
@@ -254,7 +254,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="contato@organizacao.com.br"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                       />
                     </div>
                     <div>
@@ -267,7 +267,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="(85) 99999-0000"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                       />
                     </div>
                   </div>
@@ -281,13 +281,13 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       placeholder="Descreva as cidades de interesse, hipóteses a testar ou cargos em disputa..."
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-[0.3em] transition-all shadow-xl shadow-amber-500/25 active:scale-[0.99] flex items-center justify-center gap-3 font-outfit"
+                    className="w-full py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-[0.3em] transition-all shadow-xl shadow-cyan-500/25 active:scale-[0.99] flex items-center justify-center gap-3 font-outfit"
                   >
                     <Send size={16} />
                     SOLICITAR PROPOSTA METODOLÓGICA & CRONOGRAMA

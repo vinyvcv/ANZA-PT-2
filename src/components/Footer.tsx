@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Globe, TrendingUp, ShieldCheck, Mail, ArrowRight, Check } from 'lucide-react';
-import { AnzaLogo } from './AnzaLogo';
+import { AlgoritmaLogo } from './AlgoritmaLogo';
 
 interface FooterProps {
   onExploreReport: () => void;
@@ -19,13 +19,13 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
   };
 
   return (
-    <footer className="py-20 bg-[#080214] border-t border-white/5 text-left">
+    <footer className="py-20 bg-[#03070e] border-t border-white/5 text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Top Newsletter Strip */}
         <div className="p-6 md:p-10 rounded-3xl bg-white/[0.02] border border-white/10 mb-16 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="max-w-xl">
-            <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest font-mono">
+            <span className="text-[10px] font-black text-cyan-400 uppercase tracking-widest font-mono">
               NEWSLETTER SEMANAL DE DADOS
             </span>
             <h4 className="text-xl md:text-2xl font-black text-white uppercase font-outfit mt-1">
@@ -50,11 +50,11 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Seu e-mail corporativo..."
-                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 flex-1"
+                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 flex-1"
                 />
                 <button
                   type="submit"
-                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider font-outfit transition-all shrink-0"
+                  className="px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider font-outfit transition-all shrink-0"
                 >
                   Assinar
                 </button>
@@ -66,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
         {/* 4 Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2 space-y-6">
-            <AnzaLogo size="md" withTagline={true} />
+            <AlgoritmaLogo size="md" withTagline={true} />
             <p className="text-slate-400 text-sm max-w-md leading-relaxed">
               Autoridade em dados, rigor em campo e inteligência estratégica para governos, partidos, instituições e grandes marcas em todo o território nacional.
             </p>
@@ -81,13 +81,13 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
               Estudos & Portal
             </h6>
             <div className="flex flex-col gap-2.5 text-xs text-slate-400 font-medium">
-              <a href="#inicio" className="hover:text-amber-400 transition-colors">Início & Destaques</a>
-              <button onClick={onExploreReport} className="text-left hover:text-amber-400 transition-colors">
+              <a href="#inicio" className="hover:text-cyan-400 transition-colors">Início & Destaques</a>
+              <button onClick={onExploreReport} className="text-left hover:text-cyan-400 transition-colors">
                 Pesquisa Ceará 2026 (Relatório)
               </button>
-              <a href="#simulador" className="hover:text-amber-400 transition-colors">Simulador de Votos</a>
-              <a href="#noticias" className="hover:text-amber-400 transition-colors">Arquivo de Notícias</a>
-              <a href="#metodologia" className="hover:text-amber-400 transition-colors">Ficha Técnica & Protocolos</a>
+              <a href="#simulador" className="hover:text-cyan-400 transition-colors">Simulador de Votos</a>
+              <a href="#noticias" className="hover:text-cyan-400 transition-colors">Arquivo de Notícias</a>
+              <a href="#metodologia" className="hover:text-cyan-400 transition-colors">Ficha Técnica & Protocolos</a>
             </div>
           </div>
 
@@ -98,9 +98,8 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
             <div className="flex flex-col gap-2.5 text-xs text-slate-400 font-medium">
               <span>Fortaleza, CE — Av. Santos Dumont</span>
               <span>São Paulo, SP — Av. Paulista</span>
-              <span>(85) 3044-8800</span>
-              <span>contato@anza.com.br</span>
-              <button onClick={onOpenQuote} className="text-left text-amber-400 font-bold hover:underline">
+              <span>contato@algoritmadados.com.br</span>
+              <button onClick={onOpenQuote} className="text-left text-cyan-400 font-bold hover:underline">
                 → Solicitar Orçamento de Campo
               </button>
             </div>
@@ -110,13 +109,13 @@ export const Footer: React.FC<FooterProps> = ({ onExploreReport, onOpenQuote }) 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">
           <div>
-            © 2026 ANZA Pesquisa e Inteligência de Dados. Todos os direitos reservados.
+            © 2026 Algoritma Dados Pesquisa e Inteligência. Todos os direitos reservados.
           </div>
           <div className="flex flex-wrap items-center gap-6">
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-settings'))}
-              className="hover:text-amber-400 underline decoration-dotted underline-offset-4 transition-colors"
+              className="hover:text-cyan-400 underline decoration-dotted underline-offset-4 transition-colors"
             >
               Preferências de Cookies
             </button>

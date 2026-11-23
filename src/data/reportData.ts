@@ -87,7 +87,7 @@ export const reportData: ReportDataType = {
     marginOfError: "±2,8%",
     confidence: "95%",
     period: "18 a 21 de março de 2026",
-    author: "ANZA Pesquisa e Inteligência de Dados"
+    author: "Algoritma Dados — Pesquisa e Inteligência"
   },
   index: {
     title: "ÍNDICE GERAL",
@@ -105,7 +105,7 @@ export const reportData: ReportDataType = {
       { id: "10", label: "Avaliação da Administração Federal (Presidente Lula)", page: "13", anchor: "eval-fed" },
       { id: "11", label: "Avaliação da Administração Estadual (Gov. Elmano de Freitas)", page: "14", anchor: "eval-state" }
     ],
-    disclaimer: "Esta pesquisa está registrada no Tribunal Superior Eleitoral sob o número CE-07550/2026, atendendo integralmente à Resolução-TSE nº 23.600/2019. Os dados são de uso exclusivo do contratante e seguem os protocolos de sigilo da ANZA Pesquisa e Inteligência de Dados."
+    disclaimer: "Esta pesquisa está registrada no Tribunal Superior Eleitoral sob o número CE-07550/2026, atendendo integralmente à Resolução-TSE nº 23.600/2019. Os dados são de uso exclusivo do contratante e seguem os protocolos de sigilo da Algoritma Dados."
   },
   methodology: {
     title: "FICHA TÉCNICA & METODOLOGIA",
